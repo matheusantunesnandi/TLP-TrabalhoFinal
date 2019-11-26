@@ -1,4 +1,4 @@
-package principal;
+package view;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,15 +9,13 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import lexico.G_Tabela;
-import lexico.Lexico;
-import lexico.Tipo_Token;
-import lexico.Token;
-import maq_hipo.Hipotetica;
-
-import sintatico.Sintatico;
-
-import semantico.Semantico;
+import model.Lexico;
+import model.LexicoGTabela;
+import model.LexicoTipoToken;
+import model.LexicoToken;
+import model.MaquinaHipotetica;
+import model.Semantico;
+import model.Sintatico;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -39,13 +37,13 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-public class Tela extends Shell {
+public class PrincipalGUI extends Shell {
 
-	static Tela shell;
+	static PrincipalGUI shell;
 
 	/********************************************************************************/
 
-	public static ArrayList<semantico.Instrucao> AL_Instr = new ArrayList<semantico.Instrucao>();
+	public static ArrayList<model.SemanticoInstrucao> AL_Instr = new ArrayList<model.SemanticoInstrucao>();
 	public static String AreaLiterais = "";
 
 	/********************************************************************************/
@@ -53,10 +51,10 @@ public class Tela extends Shell {
 	public static ArrayList<String> AL = new ArrayList<String>();
 	public static ArrayList<String> Erro_Sin = new ArrayList<String>();
 	public static ArrayList<String> Erro_Sem = new ArrayList<String>();
-	public static ArrayList<Token> AL_p = new ArrayList<Token>();
-	public static ArrayList<Token> AL_o = new ArrayList<Token>();
-	public static ArrayList<Token> AL_s = new ArrayList<Token>();
-	public static ArrayList<Token> ALfinal = new ArrayList<Token>();
+	public static ArrayList<LexicoToken> AL_p = new ArrayList<LexicoToken>();
+	public static ArrayList<LexicoToken> AL_o = new ArrayList<LexicoToken>();
+	public static ArrayList<LexicoToken> AL_s = new ArrayList<LexicoToken>();
+	public static ArrayList<LexicoToken> ALfinal = new ArrayList<LexicoToken>();
 	public static TabItem aba_lex;
 	public static TabItem aba_sem;
 	public static TabItem aba_sin;
@@ -82,7 +80,7 @@ public class Tela extends Shell {
 	public static void main(String args[]) {
 		try {
 			Display display = Display.getDefault();
-			shell = new Tela(display);
+			shell = new PrincipalGUI(display);
 			shell.open();
 			shell.layout();
 			while (!shell.isDisposed()) {
@@ -100,14 +98,14 @@ public class Tela extends Shell {
 	 * 
 	 * @param display
 	 */
-	public Tela(final Display display) {
+	public PrincipalGUI(final Display display) {
 		super(display, SWT.CLOSE | SWT.MIN | SWT.MAX | SWT.TITLE);
 
 		Menu menu = new Menu(this, SWT.BAR);
 		setMenuBar(menu);
 
 		MenuItem mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
-		mntmNewSubmenu.setText("Principal");
+		mntmNewSubmenu.setText("PrincipalGUI");
 
 		Menu menu_1 = new Menu(mntmNewSubmenu);
 		mntmNewSubmenu.setMenu(menu_1);
@@ -367,7 +365,7 @@ public class Tela extends Shell {
 
 		TableColumn tblclmnToken = new TableColumn(table_lex, SWT.NONE);
 		tblclmnToken.setWidth(181);
-		tblclmnToken.setText("Token");
+		tblclmnToken.setText("LexicoToken");
 
 		TableColumn tblclmnDescrio = new TableColumn(table_lex, SWT.NONE);
 		tblclmnDescrio.setWidth(169);
@@ -445,11 +443,11 @@ public class Tela extends Shell {
 		AL.removeAll(AL);
 		ALfinal.removeAll(ALfinal);
 		@SuppressWarnings("unused")
-		Tipo_Token TT = new Tipo_Token();
+		LexicoTipoToken TT = new LexicoTipoToken();
 		@SuppressWarnings("unused")
 		Lexico l = new Lexico();
 		@SuppressWarnings("unused")
-		G_Tabela gt = new G_Tabela();
+		LexicoGTabela gt = new LexicoGTabela();
 		for (int i = 0; i < ALfinal.size(); i++) {
 			String[] a = { (i + 1 + ""), ALfinal.get(i).getCodigo() + "", ALfinal.get(i).getNome(),
 					ALfinal.get(i).getDesc() };
@@ -502,7 +500,7 @@ public class Tela extends Shell {
 		table_ger.removeAll();
 		int seq = -1;
 		if ("Codigo analizado com sucesso !".equals(Erro_Sem.get(0))) {
-			Hipotetica.Interpreta();
+			MaquinaHipotetica.Interpreta();
 			for (int i = 0; i < AL_Instr.size(); i++) {
 				String[] a = { "", "", "", "", "" };
 				a[0] = (seq += 1) + "";
