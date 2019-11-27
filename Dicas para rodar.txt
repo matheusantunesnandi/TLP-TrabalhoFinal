@@ -1,0 +1,11 @@
+Instruções para execução do projeto:
+
+Utilizado:
+° Eclipse IDE for Java Developers Version: 2019-09 R (4.13.0) Build id: 20190917-1200
+° java-11-openjdk-amd64
+° javafx-sdk-11.0.2
+
+Para rodar o projeto deve ser reimportado a biblioteca do JavaFX de acordo com o diretório do JavaFXDK de cada máquina.
+
+Em seguida executar a classe Main.java do pacote "application" com "Run As" e adicionar os argumentos de JVM abaixo:
+--module-path /CAMINHO_NA_SUA_MAQUINA/javafx-sdk-11.0.2/lib/ --add-modules javafx.controls,javafx.fxml
