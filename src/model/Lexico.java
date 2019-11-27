@@ -9,7 +9,6 @@ public class Lexico {
 
 	public Lexico(String t) {
 		try {
-//			String t = PrincipalController.textaAreaEntrada.getText();// O código será guardado em "t"
 			String p = "";// todo token será "montado" aqui antes de ser analizado e ir pra a tabela final
 			int n = t.length();
 			int c = 0, ent = 0, y = 0;
@@ -597,7 +596,9 @@ public class Lexico {
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (IndexOutOfBoundsException e) {
+			JOptionPane.showMessageDialog(null, "Não há código inserido no campo de entrada.");
+		}catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
 		}
 	}
