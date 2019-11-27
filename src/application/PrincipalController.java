@@ -1,14 +1,24 @@
 package application;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.Lexico;
 import model.LexicoGTabela;
 import model.LexicoTipoToken;
@@ -24,6 +34,7 @@ public class PrincipalController {
 //	Elementos gerais da interface gráfica:
 	public TabPane tabPane = new TabPane();
 	public TextArea textaAreaEntrada = new TextArea();
+	public MenuItem mntmSalvar = new MenuItem();
 	
 //	Tabela léxica e suas colunas :
 	public TableView<LexicoToken> tabelaLexica = new TableView<LexicoToken>();
@@ -53,6 +64,11 @@ public class PrincipalController {
 	public static ArrayList<LexicoToken> ALfinal = new ArrayList<LexicoToken>();
 	public static ArrayList<String> AL = new ArrayList<String>();
 	public static String AreaLiterais = "";
+	
+//	Variáveis usadas para o menu "Opções"
+	public static boolean salvo = true;
+	public static String caminho = "";
+	public static File arquivoAberto;
 	
 	/**
 	 * Método para inicializar as configurações das tabelas.
@@ -106,60 +122,132 @@ public class PrincipalController {
 	}
 
 	public void resetarCampos() {
+		arquivoAberto = null;
+		textaAreaEntrada.setText("");
+		caminho="";
+		mntmSalvar.setDisable(true);
 		tabelaLexica.getItems().removeAll();
 		tabelaSintatica.getItems().removeAll();
 		tabelaSemantica.getItems().removeAll();
 		tabelaCodigoIntermediario.getItems().removeAll();
-		
-		// TODO adicionar restos dos campos, migrar do anterior
+		salvo=true;
 	}
 
 	@FXML
 	public void novo() {
-		System.out.println("novo");
-//		TODO novo
+		int resp = 0;
+
+//		Se o programa não estiver salvo, pergunte. Senão reseta os campos.
+		if (!salvo)
+			resp = JOptionPane.showConfirmDialog(null, "O programa não foi salvo, deseja fecha-lo mesmo assim?");
+		
+		if (resp != 0)
+			return;
+		
+		resetarCampos();
 	}
 
 	@FXML
 	public void abrir() {
-		System.out.println("abrir");
-//		TODO abrir
+		int resp = 0;
+
+//		Se o programa não estiver salvo, pergunte. Senão reseta os campos.
+		if (!salvo)
+			resp = JOptionPane.showConfirmDialog(null, "O programa não foi salvo, deseja fecha-lo mesmo assim?");
+		
+		if (resp != 0)
+			return;
+
+		selecionarArquivoEntrada();
+	}
+	
+	public void selecionarArquivoEntrada() {
+		try {
+			FileChooser fc = new FileChooser();
+			fc.setTitle("Selecione o código de entrada:");
+
+			File file = fc.showOpenDialog(new Stage());
+
+			if (file.exists() && file.isFile()) {
+
+				caminho = file.getAbsolutePath();
+
+				BufferedReader br = new BufferedReader(new FileReader(file));
+
+				String linha = "", codigo = "";
+				while ((linha = br.readLine()) != null) {
+					codigo += linha + "\n";
+				}
+
+				resetarCampos();
+
+				textaAreaEntrada.setText(codigo);
+				arquivoAberto = file;
+				br.close();
+			}
+			
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			JOptionPane.showMessageDialog(null, "Não foi possível abrir o arquivo");
+		}
 	}
 
 	@FXML
 	public void salvar() {
-		System.out.println("salvar");
-//		TODO salvar
-
+		if (arquivoAberto == null) {
+			salvarComo();
+			
+		} else {
+			salvarArquivo(arquivoAberto);
+		}
+		
 	}
 
 	@FXML
 	public void salvarComo() {
-		System.out.println("salvarComo");
-//		TODO salvarComo
+			FileChooser fc = new FileChooser();
+			fc.setTitle("Selecione o código de entrada:");
 
+			File file = fc.showSaveDialog(new Stage());
+			
+		    salvarArquivo(file);
+		    
+		    arquivoAberto = file;
+	}
+
+	private void salvarArquivo(File file) {
+		try {
+			FileWriter fw = new FileWriter(file);
+			BufferedWriter bw = new BufferedWriter(fw);
+
+			bw.write(textaAreaEntrada.getText());
+			bw.close();
+			fw.close();
+
+			definirEdicaoSalva();
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e);
+		}
 	}
 
 	@FXML
 	public void sair() {
-		System.out.println("sair");
-//		TODO sair
-
+		Runtime.getRuntime().exit(0);
 	}
 
 	@FXML
 	public void executarAnalise() {
-		System.out.println("executarAnalise");
-
 		inicalizarTabelas();
 		
 		executarAnaliseSemantica();
 	}
 	
-//	Métodos gerais:
-
+//	Métodos gerais adiante:
+	
 	public void executarAnaliseLexica() {
-		tabelaLexica.getItems().removeAll();
+		tabelaLexica.getItems().setAll(new ArrayList<>());
 		
 		AL = new ArrayList<String>();
 		ALfinal = new ArrayList<LexicoToken>();
@@ -188,7 +276,7 @@ public class PrincipalController {
 	public boolean executarAnaliseSintatica() {
 		boolean b = false;
 		
-		tabelaSintatica.getItems().removeAll();
+		tabelaSintatica.getItems().setAll(new ArrayList<>());
 		
 //		Esvazia os erros sintáticos antes de instânciar a classe novamente, que fará um novo preenchimendo destes:
 		Sintatico.Erro_Sin = new ArrayList<String>();
@@ -216,7 +304,7 @@ public class PrincipalController {
 		boolean b = false;
 		
 //		Remove o que já estava na tabela para preencher novamente com dados novos:
-		tabelaSemantica.getItems().removeAll();
+		tabelaSemantica.getItems().setAll(new ArrayList<>());
 		
 
 //		Remove o que já estava na lista para preencher novamente com dados novos:
@@ -245,9 +333,6 @@ public class PrincipalController {
 	}
 
 	public boolean gerarCodigoIntermediario() {
-		System.out.println("gerarCodigoIntermediario");
-		
-
 		boolean b = false;
 		
 //		Primeiro executa a análise:
@@ -281,5 +366,15 @@ public class PrincipalController {
 			}
 		}
 		return b;
+	}
+	
+	public void definirEdicaoNaoSalva() {
+		salvo = false;
+		mntmSalvar.setDisable(false);
+	}
+	
+	public void definirEdicaoSalva() {
+	    mntmSalvar.setDisable(true);
+	    salvo=true;
 	}
 }

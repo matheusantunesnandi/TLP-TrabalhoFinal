@@ -23,7 +23,7 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#novo" text="Novo" />
                   <MenuItem mnemonicParsing="false" onAction="#abrir" text="Abrir" />
-                  <MenuItem mnemonicParsing="false" onAction="#salvar" text="Salvar" />
+                  <MenuItem fx:id="mntmSalvar" mnemonicParsing="false" onAction="#salvar" text="Salvar" />
                   <MenuItem mnemonicParsing="false" onAction="#salvarComo" text="Salvar Como" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#sair" text="Sair" />
@@ -47,7 +47,7 @@
                <items>
                   <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
                      <content>
-                        <TextArea fx:id="textaAreaEntrada" prefHeight="400.0" prefWidth="187.0" />
+                        <TextArea fx:id="textaAreaEntrada" onKeyTyped="#definirEdicaoNaoSalva" prefHeight="400.0" prefWidth="187.0" />
                      </content>
                   </ScrollPane>
                   <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">

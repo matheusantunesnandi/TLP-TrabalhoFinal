@@ -1,0 +1,25 @@
+Program testeproc1;
+Var
+  x :integer;
+
+  Procedure p;
+    Var a :integer;
+
+    Procedure z;
+      Var zvar :integer;
+
+    begin
+      a:= 1;
+      zvar:= 2;
+
+      x:= zvar + a
+    end;
+  
+  begin
+    Call z;
+  End;
+
+Begin
+  Call p;
+  Writeln(x);
+End.  
