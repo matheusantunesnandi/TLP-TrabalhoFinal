@@ -1,0 +1,45 @@
+Program testeproc2Corrigida;
+Const a = 2;
+Var x, y :integer;
+
+Procedure p;
+	Var z :integer;
+
+	Procedure q;
+		Var t :integer;
+
+	Begin
+		z:= z-100;
+		t:= z*a;
+
+		If t > 100 then
+			Call q
+		Else
+			Writeln(t);
+	End;
+
+Begin
+	z:= x+y*a;
+
+	If z > 100 then
+		Call q
+	Else
+		Writeln(z);
+End;
+
+Begin
+	Readln(x,y);
+
+	If x > 1000 then
+		x:= 1100
+	Else
+		x:= y+100;
+
+	While x > y do
+		Begin
+			Call p;
+			Readln(x,y) 
+		End;
+
+	Writeln("tudo ok - boas férias");
+End.
