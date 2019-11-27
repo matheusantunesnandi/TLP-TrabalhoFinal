@@ -33,7 +33,7 @@ public class PrincipalController {
 	
 //	Elementos gerais da interface gráfica:
 	public TabPane tabPane = new TabPane();
-	public TextArea textaAreaEntrada = new TextArea();
+	public TextArea textAreaEntrada = new TextArea();
 	public MenuItem mntmSalvar = new MenuItem();
 	
 //	Tabela léxica e suas colunas :
@@ -123,7 +123,7 @@ public class PrincipalController {
 
 	public void resetarCampos() {
 		arquivoAberto = null;
-		textaAreaEntrada.setText("");
+		textAreaEntrada.setText("");
 		caminho="";
 		mntmSalvar.setDisable(true);
 		tabelaLexica.getItems().removeAll();
@@ -181,7 +181,7 @@ public class PrincipalController {
 
 				resetarCampos();
 
-				textaAreaEntrada.setText(codigo);
+				textAreaEntrada.setText(codigo);
 				arquivoAberto = file;
 				br.close();
 			}
@@ -221,7 +221,7 @@ public class PrincipalController {
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
 
-			bw.write(textaAreaEntrada.getText());
+			bw.write(textAreaEntrada.getText());
 			bw.close();
 			fw.close();
 
@@ -256,7 +256,7 @@ public class PrincipalController {
 		new LexicoTipoToken();
 		
 //		Instancia o Lexico para realizar a análise léxica e carregar as váriaveis estáticas para usar no for abaixo:
-		new Lexico(textaAreaEntrada.getText());
+		new Lexico(textAreaEntrada.getText());
 		
 //		Instancia o objeto GTabela para carregar a variável ALFinal nesta classe:
 		new LexicoGTabela();
@@ -339,9 +339,7 @@ public class PrincipalController {
 		executarAnalise();
 		
 //		Depois gera o código intermediário:
-//		TODO gerarCodigoIntermediario (Validar)
-
-		tabelaCodigoIntermediario.getItems().removeAll();
+		tabelaCodigoIntermediario.getItems().setAll(new ArrayList<>());
 		int seq = -1;
 		if ("Codigo analizado com sucesso !".equals(tabelaSemantica.getItems().get(0))) {
 			MaquinaHipotetica.Interpreta();

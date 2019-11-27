@@ -18,7 +18,6 @@ public class SemanticoAcao {
 	static boolean parmtr = false;
 	static ArrayList<SemanticoVar> TS = new ArrayList<SemanticoVar>();
 	static ArrayList<Integer> ponteiro_proc = new ArrayList<Integer>();
-//	static ArrayList<String> AL_DSVS = new ArrayList<String>();
 
 	public SemanticoAcao() {
 	}

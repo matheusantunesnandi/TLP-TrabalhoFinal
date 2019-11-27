@@ -47,7 +47,7 @@
                <items>
                   <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
                      <content>
-                        <TextArea fx:id="textaAreaEntrada" onKeyTyped="#definirEdicaoNaoSalva" prefHeight="400.0" prefWidth="187.0" />
+                        <TextArea fx:id="textAreaEntrada" onKeyTyped="#definirEdicaoNaoSalva" prefHeight="400.0" prefWidth="187.0" />
                      </content>
                   </ScrollPane>
                   <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">

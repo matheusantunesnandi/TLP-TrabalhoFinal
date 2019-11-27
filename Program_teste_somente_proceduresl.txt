@@ -1,0 +1,16 @@
+Program testeproc1;
+
+  Procedure p;
+
+    Procedure z;
+
+    begin
+    end;
+  
+  begin
+    Call z;
+  End;
+
+Begin
+  Call p;
+End.
