@@ -423,6 +423,7 @@ public class Semantico {
 			i += 1;
 			if (IDENT(i)) {
 				if (ASem.Acao(108)) {
+//					Incrementar nível da procedure após adicionar na Tabela de Símbolos.
 					if (DEFPAR(false)) {
 						i += 1;
 						if (A.get(i).getNome().toLowerCase().equals(";")) {

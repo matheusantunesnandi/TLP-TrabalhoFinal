@@ -41,11 +41,13 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 		S[2] = 0; // RA
 		operador = 0;
 		String leitura;
-		while (operador != 26) {// Enquanto instrução diferente de Pare
+		
+//		Enquanto a instrução não for PARE:
+		while (operador != 26) {
 			operador = Semantico.AL_Instr.get(p).getSeq();
 			l = Semantico.AL_Instr.get(p).getOp1();
 			a = Semantico.AL_Instr.get(p).getOp2();
-			p = p + 1;
+			p++;;
 
 			switch (operador) {
 			case 1:// RETU

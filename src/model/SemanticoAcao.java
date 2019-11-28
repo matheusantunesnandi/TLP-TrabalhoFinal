@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.swing.JOptionPane;
 
@@ -10,10 +11,11 @@ public class SemanticoAcao {
 	static int[] IF = new int[10];
 	static int[] WHILE = new int[10];
 	static int[] REPEAT = new int[10];
-	static int[] PROCEDURE = new int[10];
 	static int[] CASE = new int[10];
 	static int[] CASE2 = new int[10];
 	static int[] FOR = new int[10];
+	
+	static Stack<Integer> PROCEDURE = new Stack<Integer>();
 	
 	static int n_if = -1;
 	static int n_while = -1;
@@ -43,7 +45,6 @@ public class SemanticoAcao {
 			IF[i] = 0;
 			WHILE[i] = 0;
 			REPEAT[i] = 0;
-			PROCEDURE[i] = 0;
 			CASE[i] = 0;
 			CASE2[i] = 0;
 			FOR[i] = 0;
@@ -96,7 +97,7 @@ public class SemanticoAcao {
 					lc.setSeq(24);
 					lc.setCod("AMEM");
 					lc.setOp1(0);
-					lc.setOp2(n_var);
+					lc.setOp2(n_var + 3);
 					Semantico.AL_Instr.add(lc);
 					n_var = 0;
 					b = true;
@@ -130,7 +131,10 @@ public class SemanticoAcao {
 						}
 					} else {
 						if (aux_Tipo_Ident.equals("variável")) {
+//							Verifica se a Tabela de Símbolos já possui a variável:
 							if (Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
+								
+//								Cria e preenche novo registro para Tabela de Símbolos:
 								SemanticoVar v = new SemanticoVar();
 								v.setNome(model.Semantico.A.get(model.Semantico.i).getNome());
 								v.setCategoria(aux_Tipo_Ident);
@@ -138,6 +142,8 @@ public class SemanticoAcao {
 								v.setGA(n_var + 3);
 								v.setGB(0);
 								v.setPROX(0);
+								
+//								Adiciona na Tabela de Símbolos:
 								TS.add(v);
 								n_var += 1;
 								b = true;
@@ -169,6 +175,7 @@ public class SemanticoAcao {
 					Erro(i);
 				}
 				break;
+			//	Verifica se a constante foi declarada:
 			case 105:
 				try {
 					if (Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
@@ -188,6 +195,7 @@ public class SemanticoAcao {
 					Erro(i);
 				}
 				break;
+			// Insere o valor declarado na constante contida na tabela de símbolos:
 			case 106:
 				try {
 					TS.get(TS.size() - 1).setGA(Integer.parseInt(model.Semantico.A.get(model.Semantico.i).getNome()));
@@ -196,6 +204,7 @@ public class SemanticoAcao {
 					Erro(i);
 				}
 				break;
+			// Define como variável antes de declarar os identificadores:
 			case 107:
 				try {
 					aux_Tipo_Ident = "variável";
@@ -206,6 +215,7 @@ public class SemanticoAcao {
 				break;
 			case 108:
 				try {
+//					Valida se a procedure já está inserida na Tabela de Símbolos:
 					if (Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
 						SemanticoVar v = new SemanticoVar();
 						v.setNome(model.Semantico.A.get(model.Semantico.i).getNome());
@@ -224,6 +234,8 @@ public class SemanticoAcao {
 					Erro(i);
 				}
 				break;
+//				Valida se possui parâmetros sendo passados
+//				Caso sim, atualiza no GeralB da procedure em questão dentro da Tabela de Símbolos:
 			case 109:
 				try {
 					if (parmtr == true) {
@@ -242,7 +254,7 @@ public class SemanticoAcao {
 					lc.setOp2(0);
 					Semantico.AL_Instr.add(lc);
 					n_proc += 1;
-					PROCEDURE[n_proc] = Semantico.AL_Instr.size() - 1;
+					PROCEDURE.add(Semantico.AL_Instr.size());
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -256,21 +268,29 @@ public class SemanticoAcao {
 					lc.setOp1(0);
 					lc.setOp2(n_par + 1);
 					Semantico.AL_Instr.add(lc);
-					nvl -= 1;
-					Semantico.AL_Instr.get(PROCEDURE[n_proc]).setOp2(Semantico.AL_Instr.size());
+					
+					Integer proc = PROCEDURE.pop() - 1;
+					Semantico.AL_Instr.get(proc).setOp2(Semantico.AL_Instr.size());
+					
 					for (int j = 0; j < TS.size(); j++) {
 						if (TS.get(j).getNivel() > nvl) {
 							TS.remove(j);
 						}
 					}
+					
+					nvl -= 1;
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
 				}
 				break;
+//				
 			case 111:
 				try {
+//					Alterar tipo de idenficador para parâmetro;
 					aux_Tipo_Ident = "parametros";
+					
+//					Afirmar que agora o procedimento espera parâmetro
 					parmtr = true;
 					b = true;
 				} catch (Exception e) {
@@ -373,8 +393,12 @@ public class SemanticoAcao {
 						SemanticoInstrucao lc = new SemanticoInstrucao();
 						lc.setSeq(25);
 						lc.setCod("CALL");
-						lc.setOp1(nvl - (TS.get(temp).getNivel()));
-						lc.setOp2(TS.get(temp).getGA());
+						
+						// Nível atual da procedure
+						lc.setOp1(nvl-(TS.get(temp).getNivel()));
+						
+//						TODO Validar
+//						lc.setOp2(TS.get(temp).getGA());
 						Semantico.AL_Instr.add(lc);
 						b = true;
 					} else {
@@ -1059,6 +1083,9 @@ public class SemanticoAcao {
 		return b;
 	}
 
+	/**
+	 * Valida se tal elemento já existe na Tabela de Símbolos
+	 */
 	public static boolean Varrer(String nm) {
 		boolean b = true;
 		for (int i = 0; i < TS.size(); i++) {
