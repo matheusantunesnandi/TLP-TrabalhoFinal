@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import application.PrincipalController;
 
 public class Semantico {
+	public static ArrayList<model.SemanticoInstrucao> AL_Instr = new ArrayList<model.SemanticoInstrucao>();
+	public static String AreaLiterais = "";
 
 	public static ArrayList<LexicoToken> A = null;
 	SemanticoAcao ASem = new SemanticoAcao();
@@ -12,18 +14,22 @@ public class Semantico {
 
 	@SuppressWarnings({ "unchecked", "static-access" })
 	public Semantico() {
+//		Remove o que já estava na lista para preencher novamente com dados novos:
+		SemanticoAcao.Erro_Sem = new ArrayList<String>();
+		
+//		Reseta / Zera / Remove todas as instruções:
+		Semantico.AL_Instr = new ArrayList<model.SemanticoInstrucao>();
+		AreaLiterais = "";
 
 		A = (ArrayList<LexicoToken>) PrincipalController.ALfinal.clone();
 		i = a = 0;
 		ASem.Zerar();
 
 		if (PROGRAMA()) {
-			SemanticoAcao.Erro_Sem.removeAll(SemanticoAcao.Erro_Sem);
+			SemanticoAcao.Erro_Sem = new ArrayList<String>();
 			SemanticoAcao.Erro_Sem.add("Codigo analizado com sucesso !");
+			PrincipalController.analiseSemanticaComSucesso = true;
 		}
-//		for(int i=0; i<ASem.TS.size(); i++){
-//			System.out.println(ASem.TS.get(i));
-//		}
 	}
 
 	public boolean IDENT(int i) {
@@ -54,6 +60,10 @@ public class Semantico {
 	public boolean PROGRAMA() {
 		boolean b = false;
 		a = i;
+		
+		if (A == null || A.isEmpty())
+			return false;
+		
 		if (A.get(i).getNome().toLowerCase().equals("program")) {
 			i += 1;
 			if (IDENT(i)) {

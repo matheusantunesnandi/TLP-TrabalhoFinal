@@ -4,23 +4,39 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import application.PrincipalController;
-
 public class SemanticoAcao {
 	public static ArrayList<String> Erro_Sem = new ArrayList<String>();
 
-	static int[] IF = new int[10], WHILE = new int[10], REPEAT = new int[10], PROCEDURE = new int[10],
-			CASE = new int[10], CASE2 = new int[10], FOR = new int[10];
-	static int n_if = -1, n_while = -1, n_repeat = -1, n_proc = -1, n_case = -1, n_case2 = -1, case_dsvs = 0,
-			n_for = -1;
-	static int nvl = 0, topo = 2, n_var = 0, n_par = 0, ponteiro = 0;
-	static String literal, contexto, atribuicoes, aux_Tipo_Ident;
+	static int[] IF = new int[10];
+	static int[] WHILE = new int[10];
+	static int[] REPEAT = new int[10];
+	static int[] PROCEDURE = new int[10];
+	static int[] CASE = new int[10];
+	static int[] CASE2 = new int[10];
+	static int[] FOR = new int[10];
+	
+	static int n_if = -1;
+	static int n_while = -1;
+	static int n_repeat = -1;
+	static int n_proc = -1;
+	static int n_case = -1;
+	static int n_case2 = -1;
+	static int case_dsvs = 0;
+	static int n_for = -1;
+	static int 	nvl = 0;
+	static int topo = 2; 
+	static int n_var = 0; 
+	static int n_par = 0; 
+	static int 	ponteiro = 0;
+	
+	static String literal;
+	static String contexto;
+	static String atribuicoes;
+	static String aux_Tipo_Ident;
+	
 	static boolean parmtr = false;
 	static ArrayList<SemanticoVar> TS = new ArrayList<SemanticoVar>();
 	static ArrayList<Integer> ponteiro_proc = new ArrayList<Integer>();
-
-	public SemanticoAcao() {
-	}
 
 	public static void Zerar() {
 		for (int i = 0; i < 10; i++) {
@@ -46,8 +62,7 @@ public class SemanticoAcao {
 		topo = 2;
 		n_var = 0;
 		aux_Tipo_Ident = "";
-		TS.removeAll(TS);
-//		AL_DSVS.removeAll(AL_DSVS);
+		TS = new ArrayList<SemanticoVar>();
 	}
 
 	public static Boolean Acao(int i) {
@@ -69,7 +84,7 @@ public class SemanticoAcao {
 					lc.setCod("PARA");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -82,7 +97,7 @@ public class SemanticoAcao {
 					lc.setCod("AMEM");
 					lc.setOp1(0);
 					lc.setOp2(n_var);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					n_var = 0;
 					b = true;
 				} catch (Exception e) {
@@ -196,7 +211,7 @@ public class SemanticoAcao {
 						v.setNome(model.Semantico.A.get(model.Semantico.i).getNome());
 						v.setCategoria("procedure");
 						v.setNivel(nvl);
-						v.setGA(PrincipalController.AL_Instr.size() + 1);
+						v.setGA(Semantico.AL_Instr.size() + 1);
 						v.setGB(0);
 						v.setPROX(0);
 						TS.add(v);
@@ -225,9 +240,9 @@ public class SemanticoAcao {
 					lc.setCod("DSVS");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					n_proc += 1;
-					PROCEDURE[n_proc] = PrincipalController.AL_Instr.size() - 1;
+					PROCEDURE[n_proc] = Semantico.AL_Instr.size() - 1;
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -240,9 +255,9 @@ public class SemanticoAcao {
 					lc.setCod("RETU");
 					lc.setOp1(0);
 					lc.setOp2(n_par + 1);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					nvl -= 1;
-					PrincipalController.AL_Instr.get(PROCEDURE[n_proc]).setOp2(PrincipalController.AL_Instr.size());
+					Semantico.AL_Instr.get(PROCEDURE[n_proc]).setOp2(Semantico.AL_Instr.size());
 					for (int j = 0; j < TS.size(); j++) {
 						if (TS.get(j).getNivel() > nvl) {
 							TS.remove(j);
@@ -278,7 +293,7 @@ public class SemanticoAcao {
 							int j = Indice(tkn);
 							if (TS.get(j).getGA() == 0) {
 								if (j == nvl) {
-									TS.get(j).setGA(PrincipalController.AL_Instr.size());
+									TS.get(j).setGA(Semantico.AL_Instr.size());
 									b = true;
 								} else {
 									Erro(4);
@@ -323,7 +338,7 @@ public class SemanticoAcao {
 							lc.setOp2(TS.get(j).getGA());
 						}
 					}
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, e);
@@ -360,7 +375,7 @@ public class SemanticoAcao {
 						lc.setCod("CALL");
 						lc.setOp1(nvl - (TS.get(temp).getNivel()));
 						lc.setOp2(TS.get(temp).getGA());
-						PrincipalController.AL_Instr.add(lc);
+						Semantico.AL_Instr.add(lc);
 						b = true;
 					} else {
 						Erro(9);
@@ -392,7 +407,7 @@ public class SemanticoAcao {
 									lc.setCod("DSVS");
 									lc.setOp1(0);
 									lc.setOp2(TS.get(j).getGA());
-									PrincipalController.AL_Instr.add(lc);
+									Semantico.AL_Instr.add(lc);
 								} else {
 									Erro(7);
 								}
@@ -417,9 +432,9 @@ public class SemanticoAcao {
 					lc.setCod("DSVF");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					n_if += 1;
-					IF[n_if] = PrincipalController.AL_Instr.size() - 1;
+					IF[n_if] = Semantico.AL_Instr.size() - 1;
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -427,7 +442,7 @@ public class SemanticoAcao {
 				break;
 			case 121:
 				try {
-					PrincipalController.AL_Instr.get(IF[n_if]).setOp2(PrincipalController.AL_Instr.size());
+					Semantico.AL_Instr.get(IF[n_if]).setOp2(Semantico.AL_Instr.size());
 					n_if -= 1;
 					b = true;
 				} catch (Exception e) {
@@ -441,11 +456,11 @@ public class SemanticoAcao {
 					lc.setCod("DSVS");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					// ainda faz parte do comando view
 					// aqui começaa o else
-					PrincipalController.AL_Instr.get(IF[n_if]).setOp2(PrincipalController.AL_Instr.size());
-					IF[n_if] = PrincipalController.AL_Instr.size() - 1;
+					Semantico.AL_Instr.get(IF[n_if]).setOp2(Semantico.AL_Instr.size());
+					IF[n_if] = Semantico.AL_Instr.size() - 1;
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -454,7 +469,7 @@ public class SemanticoAcao {
 			case 123:
 				try {
 					n_while += 1;
-					WHILE[n_while] = PrincipalController.AL_Instr.size();
+					WHILE[n_while] = Semantico.AL_Instr.size();
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -467,9 +482,9 @@ public class SemanticoAcao {
 					lc.setCod("DSVF");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					n_while += 1;
-					WHILE[n_while] = (PrincipalController.AL_Instr.size() - 1);
+					WHILE[n_while] = (Semantico.AL_Instr.size() - 1);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -482,8 +497,8 @@ public class SemanticoAcao {
 					lc.setCod("DSVS");
 					lc.setOp1(0);
 					lc.setOp2(WHILE[n_while - 1]);
-					PrincipalController.AL_Instr.add(lc);
-					PrincipalController.AL_Instr.get(WHILE[n_while]).setOp2(PrincipalController.AL_Instr.size());
+					Semantico.AL_Instr.add(lc);
+					Semantico.AL_Instr.get(WHILE[n_while]).setOp2(Semantico.AL_Instr.size());
 					n_if -= 2;
 					b = true;
 				} catch (Exception e) {
@@ -493,7 +508,7 @@ public class SemanticoAcao {
 			case 126:
 				try {
 					n_repeat += 1;
-					REPEAT[n_repeat] = PrincipalController.AL_Instr.size();
+					REPEAT[n_repeat] = Semantico.AL_Instr.size();
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -506,7 +521,7 @@ public class SemanticoAcao {
 					lc.setCod("DSVT");
 					lc.setOp1(0);
 					lc.setOp2(REPEAT[n_repeat]);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					n_repeat -= 1;
 					b = true;
 				} catch (Exception e) {
@@ -532,7 +547,7 @@ public class SemanticoAcao {
 								lc.setCod("LEIT");
 								lc.setOp1(0);
 								lc.setOp2(0);
-								PrincipalController.AL_Instr.add(lc);
+								Semantico.AL_Instr.add(lc);
 								SemanticoInstrucao lc2 = new SemanticoInstrucao();
 								lc2.setSeq(4);
 								lc2.setCod("ARMZ");
@@ -543,7 +558,7 @@ public class SemanticoAcao {
 										lc2.setOp2(TS.get(j).getGA());
 									}
 								}
-								PrincipalController.AL_Instr.add(lc2);
+								Semantico.AL_Instr.add(lc2);
 								b = true;
 							} else {
 								Erro(3);
@@ -557,7 +572,7 @@ public class SemanticoAcao {
 										lc.setCod("CRCT");
 										lc.setOp1(0);
 										lc.setOp2(TS.get(u).getGA());
-										PrincipalController.AL_Instr.add(lc);
+										Semantico.AL_Instr.add(lc);
 										b = true;
 									} else {
 										if (TS.get(u).getCategoria().equals("variável")) {
@@ -566,7 +581,7 @@ public class SemanticoAcao {
 											lc.setCod("CRVL");
 											lc.setOp1(nvl - (TS.get(u).getNivel()));
 											lc.setOp2(TS.get(u).getGA());
-											PrincipalController.AL_Instr.add(lc);
+											Semantico.AL_Instr.add(lc);
 											b = true;
 										} else {
 											if (TS.get(u).getCategoria().equals("parametros")) {
@@ -575,7 +590,7 @@ public class SemanticoAcao {
 												lc.setCod("CRVL");
 												lc.setOp1(0/* nvl-(TS.get(u).getNivel()) */);
 												lc.setOp2(TS.get(u).getGA());
-												PrincipalController.AL_Instr.add(lc);
+												Semantico.AL_Instr.add(lc);
 												b = true;
 											} else {
 												Erro(3);
@@ -599,10 +614,10 @@ public class SemanticoAcao {
 					SemanticoInstrucao lc = new SemanticoInstrucao();
 					lc.setSeq(23);
 					lc.setCod("IMPRL");
-					lc.setOp1(PrincipalController.AreaLiterais.length());
-					PrincipalController.AreaLiterais += temp;
-					lc.setOp2(PrincipalController.AreaLiterais.length() - 1);
-					PrincipalController.AL_Instr.add(lc);
+					lc.setOp1(Semantico.AreaLiterais.length());
+					Semantico.AreaLiterais += temp;
+					lc.setOp2(Semantico.AreaLiterais.length() - 1);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -615,7 +630,7 @@ public class SemanticoAcao {
 					lc.setCod("IMPR");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -631,7 +646,7 @@ public class SemanticoAcao {
 			case 133:
 				try {
 					for (int j = 0; j <= n_case2; j++) {
-						PrincipalController.AL_Instr.get(CASE2[j]).setOp2(PrincipalController.AL_Instr.size());
+						Semantico.AL_Instr.get(CASE2[j]).setOp2(Semantico.AL_Instr.size());
 					}
 					n_case2 = -1;
 					SemanticoInstrucao lc = new SemanticoInstrucao();
@@ -639,7 +654,7 @@ public class SemanticoAcao {
 					lc.setCod("AMEN");
 					lc.setOp1(0);
 					lc.setOp2(-1);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -652,10 +667,10 @@ public class SemanticoAcao {
 					lc.setCod("DSVS");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
-					case_dsvs = PrincipalController.AL_Instr.size() - 1;
+					Semantico.AL_Instr.add(lc);
+					case_dsvs = Semantico.AL_Instr.size() - 1;
 					for (int j = 0; j < (n_case + 1); j++) {
-						PrincipalController.AL_Instr.get(CASE[j]).setOp2(PrincipalController.AL_Instr.size());
+						Semantico.AL_Instr.get(CASE[j]).setOp2(Semantico.AL_Instr.size());
 					}
 					n_case = -1;
 					b = true;
@@ -670,10 +685,10 @@ public class SemanticoAcao {
 					lc2.setCod("DSVS");
 					lc2.setOp1(0);
 					lc2.setOp2(0);
-					PrincipalController.AL_Instr.add(lc2);
+					Semantico.AL_Instr.add(lc2);
 					n_case2 += 1;
-					CASE2[n_case2] = PrincipalController.AL_Instr.size() - 1;
-					PrincipalController.AL_Instr.get(case_dsvs).setOp2(PrincipalController.AL_Instr.size());
+					CASE2[n_case2] = Semantico.AL_Instr.size() - 1;
+					Semantico.AL_Instr.get(case_dsvs).setOp2(Semantico.AL_Instr.size());
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -686,27 +701,27 @@ public class SemanticoAcao {
 					lc.setCod("COPI");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					SemanticoInstrucao lc2 = new SemanticoInstrucao();
 					lc2.setSeq(3);
 					lc2.setCod("CRCT");
 					lc2.setOp1(0);
 					lc2.setOp2(Integer.parseInt(model.Semantico.A.get(model.Semantico.i).getNome()));
-					PrincipalController.AL_Instr.add(lc2);
+					Semantico.AL_Instr.add(lc2);
 					SemanticoInstrucao lc3 = new SemanticoInstrucao();
 					lc3.setSeq(15);
 					lc3.setCod("CMIG");
 					lc3.setOp1(0);
 					lc3.setOp2(0);
-					PrincipalController.AL_Instr.add(lc3);
+					Semantico.AL_Instr.add(lc3);
 					SemanticoInstrucao lc4 = new SemanticoInstrucao();
 					lc4.setSeq(29);
 					lc4.setCod("DSVT");
 					lc4.setOp1(0);
 					lc4.setOp2(0);
-					PrincipalController.AL_Instr.add(lc4);
+					Semantico.AL_Instr.add(lc4);
 					n_case += 1;
-					CASE[n_case] = PrincipalController.AL_Instr.size() - 1;
+					CASE[n_case] = Semantico.AL_Instr.size() - 1;
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -740,7 +755,7 @@ public class SemanticoAcao {
 					lc.setCod("ARMZ");
 					lc.setOp1(0);
 					lc.setOp2(TS.get(FOR[n_for]).getGA());
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -749,33 +764,33 @@ public class SemanticoAcao {
 			case 139:
 				try {
 					n_for += 1;
-					FOR[n_for] = PrincipalController.AL_Instr.size();
+					FOR[n_for] = Semantico.AL_Instr.size();
 					SemanticoInstrucao lc = new SemanticoInstrucao();
 					lc.setSeq(28);
 					lc.setCod("COPI");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					SemanticoInstrucao lc2 = new SemanticoInstrucao();
 					lc2.setSeq(2);
 					lc2.setCod("CRVL");
 					lc2.setOp1(0);
 					lc2.setOp2(TS.get(FOR[n_for - 1]).getGA());
-					PrincipalController.AL_Instr.add(lc2);
+					Semantico.AL_Instr.add(lc2);
 					SemanticoInstrucao lc3 = new SemanticoInstrucao();
 					lc3.setSeq(18);
 					lc3.setCod("CMAI");
 					lc3.setOp1(0);
 					lc3.setOp2(0);
-					PrincipalController.AL_Instr.add(lc3);
+					Semantico.AL_Instr.add(lc3);
 					SemanticoInstrucao lc4 = new SemanticoInstrucao();
 					lc4.setSeq(20);
 					lc4.setCod("DSVF");
 					lc4.setOp1(0);
 					lc4.setOp2(0);
-					PrincipalController.AL_Instr.add(lc4);
+					Semantico.AL_Instr.add(lc4);
 					n_for += 1;
-					FOR[n_for] = PrincipalController.AL_Instr.size() - 1;
+					FOR[n_for] = Semantico.AL_Instr.size() - 1;
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -788,38 +803,38 @@ public class SemanticoAcao {
 					lc.setCod("CRVL");
 					lc.setOp1(0);
 					lc.setOp2(TS.get(FOR[n_for - 2]).getGA());
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					SemanticoInstrucao lc2 = new SemanticoInstrucao();
 					lc2.setSeq(3);
 					lc2.setCod("CRCT");
 					lc2.setOp1(0);
 					lc2.setOp2(1);
-					PrincipalController.AL_Instr.add(lc2);
+					Semantico.AL_Instr.add(lc2);
 					SemanticoInstrucao lc3 = new SemanticoInstrucao();
 					lc3.setSeq(5);
 					lc3.setCod("SOMA");
 					lc3.setOp1(0);
 					lc3.setOp2(0);
-					PrincipalController.AL_Instr.add(lc3);
+					Semantico.AL_Instr.add(lc3);
 					SemanticoInstrucao lc4 = new SemanticoInstrucao();
 					lc4.setSeq(4);
 					lc4.setCod("ARMZ");
 					lc4.setOp1(0);
 					lc4.setOp2(TS.get(FOR[n_for - 2]).getGA());
-					PrincipalController.AL_Instr.add(lc4);
+					Semantico.AL_Instr.add(lc4);
 					SemanticoInstrucao lc5 = new SemanticoInstrucao();
 					lc5.setSeq(19);
 					lc5.setCod("DSVS");
 					lc5.setOp1(0);
 					lc5.setOp2(FOR[n_for - 1]);
-					PrincipalController.AL_Instr.add(lc5);
-					PrincipalController.AL_Instr.get(FOR[n_for]).setOp2(PrincipalController.AL_Instr.size());
+					Semantico.AL_Instr.add(lc5);
+					Semantico.AL_Instr.get(FOR[n_for]).setOp2(Semantico.AL_Instr.size());
 					SemanticoInstrucao lc6 = new SemanticoInstrucao();
 					lc6.setSeq(24);
 					lc6.setCod("AMEN");
 					lc6.setOp1(0);
 					lc6.setOp2(-1);
-					PrincipalController.AL_Instr.add(lc6);
+					Semantico.AL_Instr.add(lc6);
 					n_for -= 3;
 					b = true;
 				} catch (Exception e) {
@@ -833,7 +848,7 @@ public class SemanticoAcao {
 					lc.setCod("CMIG");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -846,7 +861,7 @@ public class SemanticoAcao {
 					lc.setCod("CMME");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -859,7 +874,7 @@ public class SemanticoAcao {
 					lc.setCod("CMMA");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -872,7 +887,7 @@ public class SemanticoAcao {
 					lc.setCod("CMAI");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -885,7 +900,7 @@ public class SemanticoAcao {
 					lc.setCod("CMEI");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -898,7 +913,7 @@ public class SemanticoAcao {
 					lc.setCod("CMDF");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -911,7 +926,7 @@ public class SemanticoAcao {
 					lc.setCod("INVR");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -924,7 +939,7 @@ public class SemanticoAcao {
 					lc.setCod("SOMA");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -937,7 +952,7 @@ public class SemanticoAcao {
 					lc.setCod("SUBT");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -950,7 +965,7 @@ public class SemanticoAcao {
 					lc.setCod("DISJ");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -963,7 +978,7 @@ public class SemanticoAcao {
 					lc.setCod("MULT");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -976,7 +991,7 @@ public class SemanticoAcao {
 					lc.setCod("DIVI");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -989,7 +1004,7 @@ public class SemanticoAcao {
 					lc.setCod("CONJ");
 					lc.setOp1(0);
 					lc.setOp2(0);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -1002,7 +1017,7 @@ public class SemanticoAcao {
 					lc.setCod("CRCT");
 					lc.setOp1(0);
 					lc.setOp2(Integer.parseInt(model.Semantico.A.get(model.Semantico.i).getNome()));
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -1031,7 +1046,7 @@ public class SemanticoAcao {
 					lc.setCod("AMEN");
 					lc.setOp1(0);
 					lc.setOp2(-1);
-					PrincipalController.AL_Instr.add(lc);
+					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
 					Erro(i);

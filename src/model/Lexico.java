@@ -596,8 +596,12 @@ public class Lexico {
 					}
 				}
 			}
+			
+			PrincipalController.analiseLexicaComSucesso = true;
+			
 		} catch (IndexOutOfBoundsException e) {
 			JOptionPane.showMessageDialog(null, "Não há código inserido no campo de entrada.");
+			PrincipalController.analiseLexicaComSucesso = false;
 		}catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
 		}

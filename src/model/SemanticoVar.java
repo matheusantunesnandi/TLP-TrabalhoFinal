@@ -1,5 +1,8 @@
 package model;
-
+/**
+ * Esta classe se trata de  um objeto de registro no formato da Tabela de Símbolos.
+ *
+ */
 public class SemanticoVar {
 
 	String nome, categoria;

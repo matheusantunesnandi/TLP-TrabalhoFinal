@@ -60,10 +60,8 @@ public class PrincipalController {
 	public TableColumn<SemanticoInstrucao, Integer> op2 = new TableColumn<>("OP2");
 	
 //	Variáveis de uso dos métodos gerais:
-	public static ArrayList<model.SemanticoInstrucao> AL_Instr = new ArrayList<model.SemanticoInstrucao>();
 	public static ArrayList<LexicoToken> ALfinal = new ArrayList<LexicoToken>();
 	public static ArrayList<String> AL = new ArrayList<String>();
-	public static String AreaLiterais = "";
 	
 //	Variáveis usadas para o menu "Opções"
 	public static boolean salvo = true;
@@ -73,6 +71,11 @@ public class PrincipalController {
 	public static boolean codigoGeradoComSucesso = false;
 	public static boolean analiseSintaticaComSucesso = false;
 	public static boolean analiseSemanticaComSucesso = false;
+	public static boolean passoAnteriorComErro = false;
+	public static int ETAPA_SINTATICA = 1;
+	public static int ETAPA_SEMANTICA = 2;
+	public static int ETAPA_GER_CODIGO = 3;
+	public static int ETAPA_EXECUCAO_M_H = 4;
 	
 	/**
 	 * Método para inicializar as configurações das tabelas.
@@ -130,15 +133,20 @@ public class PrincipalController {
 		textAreaEntrada.setText("");
 		caminho="";
 		mntmSalvar.setDisable(true);
-		tabelaLexica.getItems().removeAll();
-		tabelaSintatica.getItems().removeAll();
-		tabelaSemantica.getItems().removeAll();
-		tabelaCodigoIntermediario.getItems().removeAll();
 		salvo=true;
+		resetarCamposPreAnalise();
+	}
+
+	private void resetarCamposPreAnalise() {
+		tabelaLexica.getItems().setAll(new ArrayList<>());
+		tabelaSintatica.getItems().setAll(new ArrayList<>());
+		tabelaSemantica.getItems().setAll(new ArrayList<>());
+		tabelaCodigoIntermediario.getItems().setAll(new ArrayList<>());
 		analiseLexicaComSucesso = false;
 		codigoGeradoComSucesso = false;
 		analiseSintaticaComSucesso = false;
 		analiseSemanticaComSucesso = false;
+		passoAnteriorComErro = false;
 	}
 
 	@FXML
@@ -318,6 +326,9 @@ public class PrincipalController {
 
 	@FXML
 	public void executarAnalise() {
+		
+		resetarCamposPreAnalise();
+		
 		inicalizarTabelas();
 		
 		executarAnaliseSemantica();
@@ -326,8 +337,6 @@ public class PrincipalController {
 //	Métodos gerais adiante:
 	
 	public void executarAnaliseLexica() {
-		tabelaLexica.getItems().setAll(new ArrayList<>());
-		
 		AL = new ArrayList<String>();
 		ALfinal = new ArrayList<LexicoToken>();
 		
@@ -349,100 +358,101 @@ public class PrincipalController {
 			
 			tabelaLexica.getItems().add(lt);
 		}
-		
-		analiseLexicaComSucesso = true;
 	}
 
 	public void executarAnaliseSintatica() {
-		tabelaSintatica.getItems().setAll(new ArrayList<>());
-		
-//		Esvazia os erros sintáticos antes de instânciar a classe novamente, que fará um novo preenchimendo destes:
-		Sintatico.Erro_Sin = new ArrayList<String>();
-		
-		
 //		Realiza a análise léxica que preenchera as variáveis necessárias para a análise sintática:
 		executarAnaliseLexica();
+
+		if(!passoAnteriorComSucesso(ETAPA_SINTATICA))
+			return;
 		
 //		Instância um novo Sintatico para executar o construtor e realizar a análise sintática:
 		new Sintatico();
 		
-//		TODO Tentar por um if para retornar true sem a necessidade de alterar o valor toda vez no for abaixo:
-		
+//		Adiciona os erros sintáticos na tabela da interface gráfica.
 		for (int i = 0; i < Sintatico.Erro_Sin.size(); i++) {
-			
 			tabelaSintatica.getItems().add(Sintatico.Erro_Sin.get(i));
-			
-			analiseSintaticaComSucesso = true;
 		}
 	}
 	
 	public void executarAnaliseSemantica() {
-//		Remove o que já estava na tabela para preencher novamente com dados novos:
-		tabelaSemantica.getItems().setAll(new ArrayList<>());
-
-//		Remove o que já estava na lista para preencher novamente com dados novos:
-		SemanticoAcao.Erro_Sem = new ArrayList<String>();
-		
-		AL_Instr.removeAll(AL_Instr);
-		AreaLiterais = "";
-		
 		executarAnaliseSintatica();
-		
-		if ("Codigo analizado com sucesso !".equals(Sintatico.Erro_Sin.get(0))) {
-			
-			new Semantico();
-			
-			for (int i = 0; i < SemanticoAcao.Erro_Sem.size(); i++) {
-				
-				tabelaSemantica.getItems().add(SemanticoAcao.Erro_Sem.get(i));
-								
-				analiseSemanticaComSucesso = true;
-			}
-		} else {
-			SemanticoAcao.Erro_Sem.add("Erro sintático !");
-			tabPane.getSelectionModel().select(1);
+
+		if (!passoAnteriorComSucesso(ETAPA_SEMANTICA))
+			return;
+
+//		Instância a classe Semantico para realizar a análise semântica do construtor:
+		new Semantico();
+
+//		Adiciona os erros semânticos na tabela da interface gráfica.
+		for (int i = 0; i < SemanticoAcao.Erro_Sem.size(); i++) {
+			tabelaSemantica.getItems().add(SemanticoAcao.Erro_Sem.get(i));
 		}
 	}
 
-	public boolean gerarCodigoIntermediario() {
-		boolean b = false;
+	public void gerarCodigoIntermediario() {
 		
+//		TODO Tratar para não executar caso já tenha sido realizar a análise antes:
 //		Primeiro executa a análise:
 		executarAnalise();
 		
-//		Depois gera o código intermediário:
-		tabelaCodigoIntermediario.getItems().setAll(new ArrayList<>());
-		
+		if (!passoAnteriorComSucesso(ETAPA_GER_CODIGO))
+			return;
+
 		int seq = -1;
-		if ("Codigo analizado com sucesso !".equals(tabelaSemantica.getItems().get(0))) {
-			for (int i = 0; i < AL_Instr.size(); i++) {
-				
-				SemanticoInstrucao si = new SemanticoInstrucao();
-				si.setOrdem(seq += 1);
-				si.setSeq(AL_Instr.get(i).getSeq());
-				si.setCod(AL_Instr.get(i).getCod());
-				si.setOp1(AL_Instr.get(i).getOp1());
-				si.setOp2(AL_Instr.get(i).getOp2());
-				
-				
-				tabelaCodigoIntermediario.getItems().add(si);
-				b = true;
-			}
-		} else {
-			if ("Erro sintático !".equals(tabelaSemantica.getItems().get(0))) {
-				tabPane.getSelectionModel().select(1);
-			} else {
-				tabPane.getSelectionModel().select(2);
-			}
+		for (int i = 0; i < Semantico.AL_Instr.size(); i++) {
+			
+			SemanticoInstrucao si = new SemanticoInstrucao();
+			si.setOrdem(seq += 1);
+			si.setSeq(Semantico.AL_Instr.get(i).getSeq());
+			si.setCod(Semantico.AL_Instr.get(i).getCod());
+			si.setOp1(Semantico.AL_Instr.get(i).getOp1());
+			si.setOp2(Semantico.AL_Instr.get(i).getOp2());
+			
+			
+			tabelaCodigoIntermediario.getItems().add(si);
+			codigoGeradoComSucesso = true;
 		}
-		codigoGeradoComSucesso = true;
-		
-		return b;
 	}
 	
 	public void executarNaMaquinaHipotetica() {
 		gerarCodigoIntermediario();
-		MaquinaHipotetica.Interpreta();
+		
+		if (passoAnteriorComSucesso(ETAPA_GER_CODIGO))
+			MaquinaHipotetica.Interpreta();
+	}
+
+	private boolean passoAnteriorComSucesso(int etapaAtual) {
+		if (passoAnteriorComErro)
+			return false;
+		
+		if (!analiseLexicaComSucesso && etapaAtual == ETAPA_SINTATICA) {
+			JOptionPane.showMessageDialog(null, "A análise léxica não foi realizada com sucesso.");
+			tabPane.getSelectionModel().select(0);
+			passoAnteriorComErro = true;
+			return false;
+			
+		} else if (!analiseSintaticaComSucesso && etapaAtual == ETAPA_SEMANTICA) {
+			JOptionPane.showMessageDialog(null, "A análise sintática não foi realizada com sucesso");
+			tabPane.getSelectionModel().select(1);
+			passoAnteriorComErro = true;
+			return false;
+			
+		} else if (!analiseSemanticaComSucesso && etapaAtual == ETAPA_GER_CODIGO) {
+			JOptionPane.showMessageDialog(null, "A análise semântica não foi realizada com sucesso");
+			tabPane.getSelectionModel().select(2);
+			passoAnteriorComErro = true;
+			return false;
+			
+		} else if (!codigoGeradoComSucesso && etapaAtual == ETAPA_EXECUCAO_M_H) {
+			JOptionPane.showMessageDialog(null, "O código intermediário não foi gerado com sucesso");
+			tabPane.getSelectionModel().select(3);
+			passoAnteriorComErro = true;
+			return false;
+		}
+		
+		return true;
 	}
 	
 	public void definirEdicaoNaoSalva() {

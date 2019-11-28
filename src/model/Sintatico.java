@@ -12,12 +12,16 @@ public class Sintatico {
 
 	@SuppressWarnings("unchecked")
 	public Sintatico() {
+		
+//		Esvazia os erros sintáticos antes de instânciar a classe novamente, que fará um novo preenchimendo destes:
+		Sintatico.Erro_Sin = new ArrayList<String>();
 
 		A = (ArrayList<LexicoToken>) PrincipalController.ALfinal.clone();
 
 		if (PROGRAMA()) {
-			Sintatico.Erro_Sin.removeAll(Sintatico.Erro_Sin);
+			Sintatico.Erro_Sin = new ArrayList<String>();
 			Sintatico.Erro_Sin.add("Codigo analizado com sucesso !");
+			PrincipalController.analiseSintaticaComSucesso = true;
 		}
 	}
 

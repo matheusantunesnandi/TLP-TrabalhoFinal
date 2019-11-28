@@ -2,8 +2,6 @@ package model;
 
 import javax.swing.JOptionPane;
 
-import application.PrincipalController;
-
 public class MaquinaHipotetica { // Classe que implementa a máquina hipotética.
 	public static int MaxInst = 1000;
 	public static int MaxList = 300;
@@ -44,9 +42,9 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 		operador = 0;
 		String leitura;
 		while (operador != 26) {// Enquanto instrução diferente de Pare
-			operador = PrincipalController.AL_Instr.get(p).getSeq();
-			l = PrincipalController.AL_Instr.get(p).getOp1();
-			a = PrincipalController.AL_Instr.get(p).getOp2();
+			operador = Semantico.AL_Instr.get(p).getSeq();
+			l = Semantico.AL_Instr.get(p).getOp1();
+			a = Semantico.AL_Instr.get(p).getOp2();
 			p = p + 1;
 
 			switch (operador) {
@@ -205,14 +203,14 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 				break;
 
 			case 23:// IMPRL
-				if (a >= PrincipalController.AreaLiterais.length()) {
+				if (a >= Semantico.AreaLiterais.length()) {
 					JOptionPane.showMessageDialog(null, "Literal não encontrado na área dos literais.",
 							"Erro durante a execução", JOptionPane.ERROR_MESSAGE);
 				} else {
 					String mostrar = "";
-					for (int i = 0; i < PrincipalController.AreaLiterais.length(); i++) {
+					for (int i = 0; i < Semantico.AreaLiterais.length(); i++) {
 						if (i > l && i < a) {
-							mostrar += PrincipalController.AreaLiterais.charAt(i);
+							mostrar += Semantico.AreaLiterais.charAt(i);
 						}
 					}
 					JOptionPane.showMessageDialog(null, mostrar);
