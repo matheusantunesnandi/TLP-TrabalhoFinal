@@ -394,11 +394,11 @@ public class SemanticoAcao {
 						lc.setSeq(25);
 						lc.setCod("CALL");
 						
-						// Nível atual da procedure
+						// Diferença de nível:
 						lc.setOp1(nvl-(TS.get(temp).getNivel()));
 						
 //						TODO Validar
-//						lc.setOp2(TS.get(temp).getGA());
+						lc.setOp2(TS.get(temp).getGA());
 						Semantico.AL_Instr.add(lc);
 						b = true;
 					} else {
