@@ -1,0 +1,10 @@
+Program testeproc1;
+
+  Procedure
+  
+  begin
+  End;
+
+Begin
+  Call p;
+End.

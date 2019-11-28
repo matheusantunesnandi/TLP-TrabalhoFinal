@@ -65,7 +65,6 @@ public class PrincipalController {
 	
 //	Variáveis usadas para o menu "Opções"
 	public static boolean salvo = true;
-	public static String caminho = "";
 	public static File arquivoAberto;
 	public static boolean analiseLexicaComSucesso = false;
 	public static boolean codigoGeradoComSucesso = false;
@@ -76,6 +75,16 @@ public class PrincipalController {
 	public static int ETAPA_SEMANTICA = 2;
 	public static int ETAPA_GER_CODIGO = 3;
 	public static int ETAPA_EXECUCAO_M_H = 4;
+	public static File PASTA_ENTRADA = new File("./Entradas");
+	public static File PASTA_EXPORT = new File("./Export");
+	
+	public PrincipalController() {
+		if (!PASTA_ENTRADA.exists())
+			PASTA_ENTRADA.mkdir();
+
+		if (!PASTA_EXPORT.exists())
+			PASTA_EXPORT.mkdir();
+	}
 	
 	/**
 	 * Método para inicializar as configurações das tabelas.
@@ -131,7 +140,6 @@ public class PrincipalController {
 	public void resetarCampos() {
 		arquivoAberto = null;
 		textAreaEntrada.setText("");
-		caminho="";
 		mntmSalvar.setDisable(true);
 		salvo=true;
 		resetarCamposPreAnalise();
@@ -181,12 +189,11 @@ public class PrincipalController {
 		try {
 			FileChooser fc = new FileChooser();
 			fc.setTitle("Selecione o código de entrada:");
+			fc.setInitialDirectory(PASTA_ENTRADA);
 
 			File file = fc.showOpenDialog(new Stage());
 
 			if (file.exists() && file.isFile()) {
-
-				caminho = file.getAbsolutePath();
 
 				BufferedReader br = new BufferedReader(new FileReader(file));
 
@@ -225,6 +232,7 @@ public class PrincipalController {
 	public void salvarComo() {
 			FileChooser fc = new FileChooser();
 			fc.setTitle("Escolha o caminho e nome do arquivo a ser salvo:");
+			fc.setInitialDirectory(PASTA_ENTRADA);
 
 			File file = fc.showSaveDialog(new Stage());
 			
@@ -246,6 +254,7 @@ public class PrincipalController {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Escolha o caminho e nome do arquivo a ser salvo:");
 		fc.setInitialFileName("Tabela_Lexica.csv");
+		fc.setInitialDirectory(PASTA_EXPORT);
 
 		File file = fc.showSaveDialog(new Stage());
 		
@@ -280,6 +289,7 @@ public class PrincipalController {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Escolha o caminho e nome do arquivo a ser salvo:");
 		fc.setInitialFileName("Codigo_Intermediário.csv");
+		fc.setInitialDirectory(PASTA_EXPORT);
 
 		File file = fc.showSaveDialog(new Stage());
 		
