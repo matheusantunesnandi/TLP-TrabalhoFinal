@@ -29,6 +29,12 @@
                   <MenuItem mnemonicParsing="false" onAction="#sair" text="Sair" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Mais">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#salvarTabelaLexica" text="Salvar tabela léxica" />
+                  <MenuItem mnemonicParsing="false" onAction="#salvarCodigoIntermediario" text="Salvar código intermediário" />
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>
@@ -37,6 +43,7 @@
          <top>
             <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <buttons>
+                  <Button mnemonicParsing="false" onMouseReleased="#executarNaMaquinaHipotetica" text="Executar na Máquina H." />
                   <Button mnemonicParsing="false" onMouseReleased="#gerarCodigoIntermediario" text="Gerar código intermediário" />
                   <Button mnemonicParsing="false" onMouseReleased="#executarAnalise" text="Executar análise" />
               </buttons>
@@ -103,7 +110,7 @@
                               </BorderPane>
                            </content>
                         </Tab>
-                        <Tab text="Codigo Intermediario">
+                        <Tab text="Código Intermediário">
                            <content>
                               <BorderPane prefHeight="200.0" prefWidth="200.0">
                                  <center>

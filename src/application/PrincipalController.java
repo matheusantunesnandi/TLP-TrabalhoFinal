@@ -55,9 +55,9 @@ public class PrincipalController {
 	public TableView<SemanticoInstrucao> tabelaCodigoIntermediario = new TableView<>();
 	public TableColumn<SemanticoInstrucao, Integer> ordemCodInter = new TableColumn<>("N°");
 	public TableColumn<SemanticoInstrucao, Integer> codigoTabelaCodInter = new TableColumn<>("Código");
+	public TableColumn<SemanticoInstrucao, String> instrucao = new TableColumn<>("Instrução");
 	public TableColumn<SemanticoInstrucao, Integer> op1 = new TableColumn<>("OP1");
 	public TableColumn<SemanticoInstrucao, Integer> op2 = new TableColumn<>("OP2");
-	public TableColumn<SemanticoInstrucao, String> instrucao = new TableColumn<>("Instrução");
 	
 //	Variáveis de uso dos métodos gerais:
 	public static ArrayList<model.SemanticoInstrucao> AL_Instr = new ArrayList<model.SemanticoInstrucao>();
@@ -69,6 +69,10 @@ public class PrincipalController {
 	public static boolean salvo = true;
 	public static String caminho = "";
 	public static File arquivoAberto;
+	public static boolean analiseLexicaComSucesso = false;
+	public static boolean codigoGeradoComSucesso = false;
+	public static boolean analiseSintaticaComSucesso = false;
+	public static boolean analiseSemanticaComSucesso = false;
 	
 	/**
 	 * Método para inicializar as configurações das tabelas.
@@ -131,6 +135,10 @@ public class PrincipalController {
 		tabelaSemantica.getItems().removeAll();
 		tabelaCodigoIntermediario.getItems().removeAll();
 		salvo=true;
+		analiseLexicaComSucesso = false;
+		codigoGeradoComSucesso = false;
+		analiseSintaticaComSucesso = false;
+		analiseSemanticaComSucesso = false;
 	}
 
 	@FXML
@@ -199,7 +207,8 @@ public class PrincipalController {
 			salvarComo();
 			
 		} else {
-			salvarArquivo(arquivoAberto);
+			salvarArquivo(arquivoAberto, textAreaEntrada.getText());
+			definirEdicaoSalva();
 		}
 		
 	}
@@ -207,25 +216,95 @@ public class PrincipalController {
 	@FXML
 	public void salvarComo() {
 			FileChooser fc = new FileChooser();
-			fc.setTitle("Selecione o código de entrada:");
+			fc.setTitle("Escolha o caminho e nome do arquivo a ser salvo:");
 
 			File file = fc.showSaveDialog(new Stage());
 			
-		    salvarArquivo(file);
+		    salvarArquivo(file, textAreaEntrada.getText());
 		    
 		    arquivoAberto = file;
+
+			definirEdicaoSalva();
+	}
+	
+	@FXML
+	public void salvarTabelaLexica() {
+		
+		if (!analiseLexicaComSucesso) {
+			JOptionPane.showMessageDialog(null, "Ainda não há tabela léxica gerada");
+			return;
+		}
+		
+		FileChooser fc = new FileChooser();
+		fc.setTitle("Escolha o caminho e nome do arquivo a ser salvo:");
+		fc.setInitialFileName("Tabela_Lexica.csv");
+
+		File file = fc.showSaveDialog(new Stage());
+		
+//		Construção da string e adição dos títulos das colunas:
+		StringBuilder sb = new StringBuilder();
+		sb.append(ordemLexica.getText() + ";");
+		sb.append(codigo.getText() + ";");
+		sb.append(nome.getText() + ";");
+		sb.append(desc.getText() + ";");
+		sb.append(System.lineSeparator());
+		
+//		Preenchimento das linhas restante com o conteúdo da tabela:
+		for (LexicoToken lt : tabelaLexica.getItems()) {
+			sb.append("\"" + lt.getOrdem() + "\";");
+			sb.append("\"" + lt.getCodigo() + "\";");
+			sb.append("\"" + lt.getNome() + "\";");
+			sb.append("\"" + lt.getDesc() + "\";");
+			sb.append(System.lineSeparator());
+		}
+		
+		salvarArquivo(file, sb.toString());
+	}
+	
+	@FXML
+	public void salvarCodigoIntermediario() {
+		
+		if (!codigoGeradoComSucesso) {
+			JOptionPane.showMessageDialog(null, "Ainda não há código intermediário gerado");
+			return;
+		}
+		
+		FileChooser fc = new FileChooser();
+		fc.setTitle("Escolha o caminho e nome do arquivo a ser salvo:");
+		fc.setInitialFileName("Codigo_Intermediário.csv");
+
+		File file = fc.showSaveDialog(new Stage());
+		
+//		Construção da string e adição dos títulos das colunas:
+		StringBuilder sb = new StringBuilder();
+		sb.append(ordemCodInter.getText() + ";");
+		sb.append(codigoTabelaCodInter.getText() + ";");
+		sb.append(instrucao.getText() + ";");
+		sb.append(op1.getText() + ";");
+		sb.append(op2.getText() + ";");
+		sb.append(System.lineSeparator());
+		
+//		Preenchimento das linhas restante com o conteúdo da tabela:
+		for (SemanticoInstrucao se : tabelaCodigoIntermediario.getItems()) {
+			sb.append("\"" + se.getOrdem() + "\";");
+			sb.append("\"" + se.getSeq() + "\";");
+			sb.append("\"" + se.getCod() + "\";");
+			sb.append("\"" + se.getOp1() + "\";");
+			sb.append("\"" + se.getOp2() + "\";");
+			sb.append(System.lineSeparator());
+		}
+		
+		salvarArquivo(file, sb.toString());
 	}
 
-	private void salvarArquivo(File file) {
+	private void salvarArquivo(File file, String texto) {
 		try {
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
-
-			bw.write(textAreaEntrada.getText());
+			
+			bw.write(texto);
 			bw.close();
 			fw.close();
-
-			definirEdicaoSalva();
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
@@ -270,12 +349,11 @@ public class PrincipalController {
 			
 			tabelaLexica.getItems().add(lt);
 		}
-
+		
+		analiseLexicaComSucesso = true;
 	}
 
-	public boolean executarAnaliseSintatica() {
-		boolean b = false;
-		
+	public void executarAnaliseSintatica() {
 		tabelaSintatica.getItems().setAll(new ArrayList<>());
 		
 //		Esvazia os erros sintáticos antes de instânciar a classe novamente, que fará um novo preenchimendo destes:
@@ -294,18 +372,13 @@ public class PrincipalController {
 			
 			tabelaSintatica.getItems().add(Sintatico.Erro_Sin.get(i));
 			
-			b = true;
+			analiseSintaticaComSucesso = true;
 		}
-		
-		return b;
 	}
 	
-	public boolean executarAnaliseSemantica() {
-		boolean b = false;
-		
+	public void executarAnaliseSemantica() {
 //		Remove o que já estava na tabela para preencher novamente com dados novos:
 		tabelaSemantica.getItems().setAll(new ArrayList<>());
-		
 
 //		Remove o que já estava na lista para preencher novamente com dados novos:
 		SemanticoAcao.Erro_Sem = new ArrayList<String>();
@@ -322,14 +395,13 @@ public class PrincipalController {
 			for (int i = 0; i < SemanticoAcao.Erro_Sem.size(); i++) {
 				
 				tabelaSemantica.getItems().add(SemanticoAcao.Erro_Sem.get(i));
-				
-				b = true;
+								
+				analiseSemanticaComSucesso = true;
 			}
 		} else {
 			SemanticoAcao.Erro_Sem.add("Erro sintático !");
 			tabPane.getSelectionModel().select(1);
 		}
-		return b;
 	}
 
 	public boolean gerarCodigoIntermediario() {
@@ -340,9 +412,9 @@ public class PrincipalController {
 		
 //		Depois gera o código intermediário:
 		tabelaCodigoIntermediario.getItems().setAll(new ArrayList<>());
+		
 		int seq = -1;
 		if ("Codigo analizado com sucesso !".equals(tabelaSemantica.getItems().get(0))) {
-			MaquinaHipotetica.Interpreta();
 			for (int i = 0; i < AL_Instr.size(); i++) {
 				
 				SemanticoInstrucao si = new SemanticoInstrucao();
@@ -363,7 +435,14 @@ public class PrincipalController {
 				tabPane.getSelectionModel().select(2);
 			}
 		}
+		codigoGeradoComSucesso = true;
+		
 		return b;
+	}
+	
+	public void executarNaMaquinaHipotetica() {
+		gerarCodigoIntermediario();
+		MaquinaHipotetica.Interpreta();
 	}
 	
 	public void definirEdicaoNaoSalva() {
@@ -371,6 +450,7 @@ public class PrincipalController {
 		mntmSalvar.setDisable(false);
 	}
 	
+	@FXML
 	public void definirEdicaoSalva() {
 	    mntmSalvar.setDisable(true);
 	    salvo=true;
