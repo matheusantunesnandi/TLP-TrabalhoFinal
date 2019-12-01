@@ -39,7 +39,7 @@ public class PrincipalController {
 //	Tabela léxica e suas colunas :
 	public TableView<LexicoToken> tabelaLexica = new TableView<LexicoToken>();
 	public TableColumn<LexicoToken, Integer> ordemLexica = new TableColumn<>("N°");
-	public TableColumn<LexicoToken, Integer> codigo = new TableColumn<>("codigo");
+	public TableColumn<LexicoToken, Integer> codigo = new TableColumn<>("Código");
 	public TableColumn<LexicoToken, String> nome = new TableColumn<>("Token");
 	public TableColumn<LexicoToken, String> desc = new TableColumn<>("Descrição");
 	

@@ -1,0 +1,19 @@
+Program testeproc1;
+	Var x :integer;
+
+  Procedure p;
+
+    Procedure z;
+
+    begin
+    end;
+  
+  begin
+    Call z;
+  End;
+
+Begin
+  Call p;
+  Readln(x);
+  Writeln(x + 5);
+End.
