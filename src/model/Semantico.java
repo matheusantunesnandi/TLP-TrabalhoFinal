@@ -483,35 +483,27 @@ public class Semantico {
 	}
 
 	public boolean DCLVAR(boolean q) {
-		boolean b = false;
 		a = i;
+
 		i++;
-		if (A.get(i).getNome().toLowerCase().equals("var")) {
-			if (SemanticoAcao.Acao(107)) {
-				if (LID(true)) {
-					i++;
-					if (A.get(i).getNome().toLowerCase().equals(":")) {
-						if (TIPO()) {
-							i++;
-							if (A.get(i).getNome().toLowerCase().equals(";")) {
-								if (LDVAR(false)) {
-									if (SemanticoAcao.Acao(102)) {
-										b = true;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if (!b) {
+		if (!A.get(i).getNome().toLowerCase().equals("var") || !SemanticoAcao.Acao(107) || !LID(true)) {
 			i = a;
-			if (q == false) {
-				b = true;
-			}
+			return !q;
 		}
-		return b;
+
+		i++;
+		if (!A.get(i).getNome().toLowerCase().equals(":") || !TIPO()) {
+			i = a;
+			return !q;
+		}
+		
+		i++;
+		if (!A.get(i).getNome().toLowerCase().equals(";") || !LDVAR(false) || !SemanticoAcao.Acao(102)) {
+			i = a;
+			return !q;
+		}
+		
+		return true;
 	}
 	
 	public boolean DEFPAR(boolean q) {
