@@ -54,12 +54,10 @@ public class Semantico {
 			return false;
 
 		i++;
-		;
 		if (!IDENT(i) || !SemanticoAcao.Acao(100))
 			return false;
 
 		i++;
-		;
 		if (!A.get(i).getNome().equals(";") || !BLOCO())
 			return false;
 
