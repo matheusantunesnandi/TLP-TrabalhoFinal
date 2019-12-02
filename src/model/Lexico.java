@@ -1,11 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 import application.PrincipalController;
 
 
 public class Lexico {
+	public static ArrayList<LexicoToken> ALfinal = new ArrayList<LexicoToken>();
 
 	public Lexico(String t) {
 		try {
@@ -57,14 +60,14 @@ public class Lexico {
 					} else {
 						p = p + a;
 						if (i == n - 1) {
-							PrincipalController.AL.add(p);
+							LexicoGTabela.AL.add(p);
 							p = "";
 						} else {
 							a = t.charAt(i + 1);
 							if (Character.isLetter(a) || Character.isDigit(a)) {
 								c = 1;
 							} else {
-								PrincipalController.AL.add(p);
+								LexicoGTabela.AL.add(p);
 								p = "";
 								if (a == ':' || a == '>') {
 									c = 3;
@@ -100,14 +103,14 @@ public class Lexico {
 				case 2:// monta números
 					p = p + a;
 					if (i == n - 1) {
-						PrincipalController.AL.add(p);
+						LexicoGTabela.AL.add(p);
 						p = "";
 					} else {
 						a = t.charAt(i + 1);
 						if (Character.isDigit(a)) {
 							c = 2;
 						} else {
-							PrincipalController.AL.add(p);
+							LexicoGTabela.AL.add(p);
 							p = "";
 							if (Character.isLetter(a)) {
 								JOptionPane.showMessageDialog(null, "Uma palavra não pode começar em número (linha " + (ent + 1) + ")");
@@ -147,14 +150,14 @@ public class Lexico {
 				case 3:// em caso de ":" ou ">"
 					p = p + a;
 					if (i == n - 1) {
-						PrincipalController.AL.add(p);
+						LexicoGTabela.AL.add(p);
 						p = "";
 					} else {
 						a = t.charAt(i + 1);
 						if (a == '=') {
 							c = 10;
 						} else {
-							PrincipalController.AL.add(p);
+							LexicoGTabela.AL.add(p);
 							p = "";
 							if (Character.isLetter(a)) {
 								c = 1;
@@ -197,14 +200,14 @@ public class Lexico {
 				case 4:// em caso de ">"
 					p = p + a;
 					if (i == n - 1) {
-						PrincipalController.AL.add(p);
+						LexicoGTabela.AL.add(p);
 						p = "";
 					} else {
 						a = t.charAt(i + 1);
 						if (a == '>' || a == '=') {
 							c = 10;
 						} else {
-							PrincipalController.AL.add(p);
+							LexicoGTabela.AL.add(p);
 							p = "";
 							if (Character.isLetter(a)) {
 								c = 1;
@@ -247,14 +250,14 @@ public class Lexico {
 				case 5:// em caso de "."
 					p = p + a;
 					if (i == n - 1) {
-						PrincipalController.AL.add(p);
+						LexicoGTabela.AL.add(p);
 						p = "";
 					} else {
 						a = t.charAt(i + 1);
 						if (a == '.' && p.length() == 1) {
 							c = 5;
 						} else {
-							PrincipalController.AL.add(p);
+							LexicoGTabela.AL.add(p);
 							p = "";
 							if (Character.isLetter(a)) {
 								c = 1;
@@ -310,7 +313,7 @@ public class Lexico {
 							} else {
 								if (a == '\"' && y == 1) {
 									p = p + a;
-									PrincipalController.AL.add(p);
+									LexicoGTabela.AL.add(p);
 									p = "";
 									y = 0;
 									if (i == n - 1) {
@@ -361,14 +364,14 @@ public class Lexico {
 				case 7:// em caso de (
 					p = p + a;
 					if (i == n - 1) {
-						PrincipalController.AL.add(p);
+						LexicoGTabela.AL.add(p);
 						p = "";
 					} else {
 						a = t.charAt(i + 1);
 						if (a == '*') {
 							c = 8;
 						} else {
-							PrincipalController.AL.add(p);
+							LexicoGTabela.AL.add(p);
 							p = "";
 							if (Character.isLetter(a)) {
 								c = 1;
@@ -466,7 +469,7 @@ public class Lexico {
 					break;
 				case 10:// caracteres especiais
 					p = p + a;
-					PrincipalController.AL.add(p);
+					LexicoGTabela.AL.add(p);
 					p = "";
 					if (i == n - 1) {
 					} else {

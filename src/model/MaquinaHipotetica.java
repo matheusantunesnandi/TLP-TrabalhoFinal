@@ -57,33 +57,33 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 				break;
 
 			case 2:// CRVL
-				topo = topo + 1;
+				topo++;
 				S[topo] = S[Base() + a];
 				break;
 
 			case 3: // CRCT
-				topo = topo + 1;
+				topo++;
 				S[topo] = a;
 				break;
 
 			case 4:// ARMZ
 				S[Base() + a] = S[topo];
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 5:// SOMA
 				S[topo - 1] = S[topo - 1] + S[topo];
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 6:// SUBT
 				S[topo - 1] = S[topo - 1] - S[topo];
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 7:// MULT
 				S[topo - 1] = S[topo - 1] * S[topo];
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 8: // DIVI
@@ -93,7 +93,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 					p = 26;
 				} else {
 					S[topo - 1] = S[topo - 1] / S[topo];
-					topo = topo - 1;
+					topo--;
 				}
 				break;
 
@@ -115,7 +115,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 					S[topo - 1] = 1;
 				} else {
 					S[topo - 1] = 0;
-					topo = topo - 1;
+					topo--;
 				}
 				break;
 
@@ -124,7 +124,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 					S[topo - 1] = 1;
 				} else {
 					S[topo - 1] = 0;
-					topo = topo - 1;
+					topo--;
 				}
 				break;
 
@@ -134,7 +134,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 				} else {
 					S[topo - 1] = 0;
 				}
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 14:// CMMA
@@ -143,7 +143,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 				} else {
 					S[topo - 1] = 0;
 				}
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 15:// CMIG
@@ -152,7 +152,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 				} else {
 					S[topo - 1] = 0;
 				}
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 16:// CMDF
@@ -161,7 +161,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 				} else {
 					S[topo - 1] = 0;
 				}
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 17:// CMEI
@@ -170,7 +170,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 				} else {
 					S[topo - 1] = 0;
 				}
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 18:// CMAI
@@ -179,7 +179,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 				} else {
 					S[topo - 1] = 0;
 				}
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 19:// DSVS
@@ -190,18 +190,18 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 				if (S[topo] == 0) {
 					p = a;
 				}
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 21:// LEIT
-				topo = topo + 1;
+				topo++;
 				leitura = JOptionPane.showInputDialog("Informe o valor:");
 				(S[topo]) = Integer.parseInt(leitura);
 				break;
 
 			case 22:// IMPR
 				JOptionPane.showMessageDialog(null, S[topo]);
-				topo = topo - 1;
+				topo--;
 				break;
 
 			case 23:// IMPRL
@@ -241,7 +241,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 				break;
 
 			case 28:// COPI
-				topo = topo + 1;
+				topo++;
 				S[topo] = S[topo - 1];
 				break;
 
@@ -249,7 +249,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 				if (S[topo] == 1) {
 					p = a;
 				}
-				topo = topo - 1;
+				topo--;
 			}
 		}
 	}

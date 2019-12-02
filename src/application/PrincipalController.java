@@ -59,10 +59,6 @@ public class PrincipalController {
 	public TableColumn<SemanticoInstrucao, Integer> op1 = new TableColumn<>("OP1");
 	public TableColumn<SemanticoInstrucao, Integer> op2 = new TableColumn<>("OP2");
 	
-//	Variáveis de uso dos métodos gerais:
-	public static ArrayList<LexicoToken> ALfinal = new ArrayList<LexicoToken>();
-	public static ArrayList<String> AL = new ArrayList<String>();
-	
 //	Variáveis usadas para o menu "Opções"
 	public static boolean salvo = true;
 	public static File arquivoAberto;
@@ -347,8 +343,8 @@ public class PrincipalController {
 //	Métodos gerais adiante:
 	
 	public void executarAnaliseLexica() {
-		AL = new ArrayList<String>();
-		ALfinal = new ArrayList<LexicoToken>();
+		LexicoGTabela.AL = new ArrayList<String>();
+		Lexico.ALfinal = new ArrayList<LexicoToken>();
 		
 //		Instancia tipoToken para carregar as listas estáticas dentro da classe:
 		new LexicoTipoToken();
@@ -356,15 +352,15 @@ public class PrincipalController {
 //		Instancia o Lexico para realizar a análise léxica e carregar as váriaveis estáticas para usar no for abaixo:
 		new Lexico(textAreaEntrada.getText());
 		
-//		Instancia o objeto GTabela para carregar a variável ALFinal nesta classe:
+//		Instancia o objeto GTabela para carregar a variável Lexico.ALfinal nesta classe:
 		new LexicoGTabela();
 		
-		for (int i = 0; i < ALfinal.size(); i++) {
+		for (int i = 0; i < Lexico.ALfinal.size(); i++) {
 			LexicoToken lt = new LexicoToken();
 			lt.setOrdem(i + 1);
-			lt.setCodigo(ALfinal.get(i).getCodigo());
-			lt.setNome(ALfinal.get(i).getNome());
-			lt.setDesc(ALfinal.get(i).getDesc());
+			lt.setCodigo(Lexico.ALfinal.get(i).getCodigo());
+			lt.setNome(Lexico.ALfinal.get(i).getNome());
+			lt.setDesc(Lexico.ALfinal.get(i).getDesc());
 			
 			tabelaLexica.getItems().add(lt);
 		}

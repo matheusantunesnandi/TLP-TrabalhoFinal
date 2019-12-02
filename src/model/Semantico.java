@@ -12,7 +12,7 @@ public class Semantico {
 	SemanticoAcao ASem = new SemanticoAcao();
 	static int i, a;
 
-	@SuppressWarnings({ "unchecked", "static-access" })
+	@SuppressWarnings({ "unchecked"})
 	public Semantico() {
 //		Remove o que já estava na lista para preencher novamente com dados novos:
 		SemanticoAcao.Erro_Sem = new ArrayList<String>();
@@ -21,7 +21,7 @@ public class Semantico {
 		Semantico.AL_Instr = new ArrayList<model.SemanticoInstrucao>();
 		AreaLiterais = "";
 
-		A = (ArrayList<LexicoToken>) PrincipalController.ALfinal.clone();
+		A = (ArrayList<LexicoToken>) Lexico.ALfinal.clone();
 		i = a = 0;
 		SemanticoAcao.Zerar();
 
@@ -45,7 +45,7 @@ public class Semantico {
 		return A.get(i).getDesc().equals("Inteiro");
 	}
 
-	@SuppressWarnings("static-access")
+	
 	public boolean PROGRAMA() {
 		if (A == null || A.isEmpty())
 			return false;
@@ -92,8 +92,7 @@ public class Semantico {
 
 		return true;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean COMANDO(boolean q) {
 		boolean b = false;
 		a = i;
@@ -348,8 +347,7 @@ public class Semantico {
 		}
 		return b;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean CONDCASE() {
 		boolean b = false;
 		a = i;
@@ -397,8 +395,7 @@ public class Semantico {
 		}
 		return b;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean DCLCONST(boolean q) {
 		boolean b = false;
 		a = i;
@@ -432,8 +429,7 @@ public class Semantico {
 		}
 		return b;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean DCLPROC(boolean q) {
 		boolean b = false;
 		a = i;
@@ -471,8 +467,7 @@ public class Semantico {
 		}
 		return b;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean DCLROT(boolean q) {
 		boolean b = false;
 		a = i;
@@ -496,7 +491,6 @@ public class Semantico {
 		return b;
 	}
 
-	@SuppressWarnings("static-access")
 	public boolean DCLVAR(boolean q) {
 		boolean b = false;
 		a = i;
@@ -528,8 +522,7 @@ public class Semantico {
 		}
 		return b;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean DEFPAR(boolean q) {
 		boolean b = false;
 		a = i;
@@ -558,8 +551,7 @@ public class Semantico {
 		}
 		return b;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean ELSEPARTE(boolean q) {
 		boolean b = false;
 		a = i;
@@ -589,8 +581,7 @@ public class Semantico {
 		}
 		return b;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean EXPSINP() {
 		boolean b = false;
 		a = i;
@@ -624,8 +615,7 @@ public class Semantico {
 		}
 		return b;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean FATOR() {
 		boolean b = false;
 		a = i;
@@ -669,7 +659,6 @@ public class Semantico {
 		return b;
 	}
 
-	@SuppressWarnings("static-access")
 	public boolean ITEMSAIDA() {
 		boolean b = false;
 		a = i;
@@ -691,8 +680,7 @@ public class Semantico {
 		}
 		return b;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean LDCONST(boolean q) {
 		boolean b = false;
 		a = i;
@@ -748,8 +736,7 @@ public class Semantico {
 		}
 		return b;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean LID(boolean q) {
 		boolean b = false;
 		a = i;
@@ -766,8 +753,7 @@ public class Semantico {
 		}
 		return b;
 	}
-
-	@SuppressWarnings("static-access")
+	
 	public boolean PARAMETROS(boolean q) {
 		boolean b = false;
 		a = i;
@@ -793,7 +779,6 @@ public class Semantico {
 		return b;
 	}
 
-	@SuppressWarnings("static-access")
 	public boolean RCOMID() {
 		boolean b = false;
 		a = i;
@@ -845,7 +830,6 @@ public class Semantico {
 		return b;
 	}
 
-	@SuppressWarnings("static-access")
 	public boolean REPEXPSIMP(boolean q) {
 		boolean b = false;
 		a = i;
@@ -906,7 +890,6 @@ public class Semantico {
 		return b;
 	}
 
-	@SuppressWarnings("static-access")
 	public boolean REPEXP(boolean q) {
 		boolean b = false;
 		a = i;
@@ -949,7 +932,6 @@ public class Semantico {
 		return b;
 	}
 
-	@SuppressWarnings("static-access")
 	public boolean REPIDENT(boolean q) {
 		boolean b = false;
 		a = i;
@@ -993,7 +975,7 @@ public class Semantico {
 		return b;
 	}
 
-	@SuppressWarnings("static-access")
+	
 	public boolean REPPAR(boolean q) {
 		boolean b = false;
 		a = i;
@@ -1036,7 +1018,7 @@ public class Semantico {
 		return b;
 	}
 
-	@SuppressWarnings("static-access")
+	
 	public boolean REPTERMO(boolean q) {
 		boolean b = false;
 		a = i;
@@ -1079,7 +1061,7 @@ public class Semantico {
 		return b;
 	}
 
-	@SuppressWarnings("static-access")
+	
 	public boolean RPINTEIRO(boolean q) {
 		boolean b = false;
 		a = i;
@@ -1178,7 +1160,6 @@ public class Semantico {
 		return b;
 	}
 
-	@SuppressWarnings("static-access")
 	public boolean VARIAVEL() {
 		boolean b = false;
 		a = i;
