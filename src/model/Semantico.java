@@ -12,7 +12,7 @@ public class Semantico {
 	SemanticoAcao ASem = new SemanticoAcao();
 	static int i, a;
 
-	@SuppressWarnings({ "unchecked"})
+	@SuppressWarnings({ "unchecked" })
 	public Semantico() {
 //		Remove o que já estava na lista para preencher novamente com dados novos:
 		SemanticoAcao.Erro_Sem = new ArrayList<String>();
@@ -45,7 +45,6 @@ public class Semantico {
 		return A.get(i).getDesc().equals("Inteiro");
 	}
 
-	
 	public boolean PROGRAMA() {
 		if (A == null || A.isEmpty())
 			return false;
@@ -92,87 +91,87 @@ public class Semantico {
 
 		return true;
 	}
-	
+
 	public boolean COMANDO(boolean q) {
 		boolean b = false;
 		a = i;
 		i++;
 		if (A.get(i).getNome().toLowerCase().equals("for") && !validarSemanticaComandoFor(b)) {
-			
+
 			b = validarSemanticaComandoFor(b);
-			
+
 		} else {
 			i = a;
 			i++;
-			
+
 			if (A.get(i).getNome().toLowerCase().equals("call")) {
 				b = validarSemanticaComandoCall(b);
-				
+
 			} else {
 				i = a;
 				i++;
-				
+
 				if (A.get(i).getNome().toLowerCase().equals("goto")) {
 					b = validarSemanticaComandoGoto(b);
-					
+
 				} else {
 					i = a;
 					i++;
-					
+
 					if (A.get(i).getNome().toLowerCase().equals("if")) {
 						b = validarSemanticaComandoIf(b);
-						
+
 					} else {
 						i = a;
 						i++;
-						
+
 						if (A.get(i).getNome().toLowerCase().equals("while")) {
 							b = validarSemanticaComandoWhile(b);
-							
+
 						} else {
 							i = a;
 							i++;
-							
+
 							if (A.get(i).getNome().toLowerCase().equals("repeat")) {
 								b = validarSemanticaComandoRepeat(b);
-								
+
 							} else {
 								i = a;
 								i++;
-								
+
 								if (A.get(i).getNome().toLowerCase().equals("readln")) {
 									b = validarSemanticaComandoReadln(b);
-									
+
 								} else {
 									i = a;
 									i++;
-									
+
 									if (A.get(i).getNome().toLowerCase().equals("writeln")) {
 										b = validarSemanticaComandoWriteln(b);
-										
+
 									} else {
 										i = a;
 										i++;
-										
+
 										if (A.get(i).getNome().toLowerCase().equals("case")) {
 											b = validarSemanticaComandoCase(b);
-											
+
 										} else {
 											i = a;
 											i++;
-											
+
 											if (IDENT(i)) {
 												if (A.get(i + 1).getNome().toLowerCase().equals(":")) {
 													if (RCOMID()) {
 														b = true;
 													}
-													
+
 												} else {
 													SemanticoAcao.Acao(156);
-													
+
 													if (RCOMID()) {
 														b = true;
-														
+
 													} else {
 														i = a;
 														if (q == false) {
@@ -181,7 +180,7 @@ public class Semantico {
 													}
 												}
 											} else {
-												
+
 												i = a;
 												if (CORPO(false)) {
 													b = true;
@@ -347,7 +346,7 @@ public class Semantico {
 		}
 		return b;
 	}
-	
+
 	public boolean CONDCASE() {
 		boolean b = false;
 		a = i;
@@ -395,7 +394,7 @@ public class Semantico {
 		}
 		return b;
 	}
-	
+
 	public boolean DCLCONST(boolean q) {
 		boolean b = false;
 		a = i;
@@ -429,7 +428,7 @@ public class Semantico {
 		}
 		return b;
 	}
-	
+
 	public boolean DCLPROC(boolean q) {
 		boolean b = false;
 		a = i;
@@ -467,16 +466,15 @@ public class Semantico {
 		}
 		return b;
 	}
-	
+
 	public boolean DCLROT() {
 		a = i;
-		
+
 		i++;
 		if (!A.get(i).getNome().toLowerCase().equals("label") || !SemanticoAcao.Acao(103) || !LID(true)) {
 			i = a;
 			return false;
 		}
-		
 
 		i++;
 		return A.get(i).getNome().toLowerCase().equals(";");
@@ -496,16 +494,16 @@ public class Semantico {
 			i = a;
 			return !q;
 		}
-		
+
 		i++;
 		if (!A.get(i).getNome().toLowerCase().equals(";") || !LDVAR(false) || !SemanticoAcao.Acao(102)) {
 			i = a;
 			return !q;
 		}
-		
+
 		return true;
 	}
-	
+
 	public boolean DEFPAR(boolean q) {
 		boolean b = false;
 		a = i;
@@ -534,7 +532,7 @@ public class Semantico {
 		}
 		return b;
 	}
-	
+
 	public boolean ELSEPARTE(boolean q) {
 		boolean b = false;
 		a = i;
@@ -564,7 +562,7 @@ public class Semantico {
 		}
 		return b;
 	}
-	
+
 	public boolean EXPSINP() {
 		boolean b = false;
 		a = i;
@@ -598,7 +596,7 @@ public class Semantico {
 		}
 		return b;
 	}
-	
+
 	public boolean FATOR() {
 		boolean b = false;
 		a = i;
@@ -663,7 +661,7 @@ public class Semantico {
 		}
 		return b;
 	}
-	
+
 	public boolean LDCONST(boolean q) {
 		boolean b = false;
 		a = i;
@@ -719,7 +717,7 @@ public class Semantico {
 		}
 		return b;
 	}
-	
+
 	public boolean LID(boolean q) {
 		boolean b = false;
 		a = i;
@@ -736,7 +734,7 @@ public class Semantico {
 		}
 		return b;
 	}
-	
+
 	public boolean PARAMETROS(boolean q) {
 		boolean b = false;
 		a = i;
@@ -958,7 +956,6 @@ public class Semantico {
 		return b;
 	}
 
-	
 	public boolean REPPAR(boolean q) {
 		boolean b = false;
 		a = i;
@@ -1001,7 +998,6 @@ public class Semantico {
 		return b;
 	}
 
-	
 	public boolean REPTERMO(boolean q) {
 		boolean b = false;
 		a = i;
@@ -1044,7 +1040,6 @@ public class Semantico {
 		return b;
 	}
 
-	
 	public boolean RPINTEIRO(boolean q) {
 		boolean b = false;
 		a = i;
