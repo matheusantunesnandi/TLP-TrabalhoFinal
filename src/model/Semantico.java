@@ -69,7 +69,7 @@ public class Semantico {
 	}
 
 	public boolean BLOCO() {
-		if (!DCLROT(false) || !DCLCONST(false) || !DCLVAR(false) || !DCLPROC(false))
+		if (DCLROT() || !DCLCONST(false) || !DCLVAR(false) || !DCLPROC(false))
 			return false;
 
 		return CORPO(true);
@@ -468,27 +468,18 @@ public class Semantico {
 		return b;
 	}
 	
-	public boolean DCLROT(boolean q) {
-		boolean b = false;
+	public boolean DCLROT() {
 		a = i;
+		
 		i++;
-		if (A.get(i).getNome().toLowerCase().equals("label")) {
-			if (SemanticoAcao.Acao(103)) {
-				if (LID(true)) {
-					i++;
-					if (A.get(i).getNome().toLowerCase().equals(";")) {
-						b = true;
-					}
-				}
-			}
-		}
-		if (!b) {
+		if (!A.get(i).getNome().toLowerCase().equals("label") || !SemanticoAcao.Acao(103) || !LID(true)) {
 			i = a;
-			if (q == false) {
-				b = true;
-			}
+			return false;
 		}
-		return b;
+		
+
+		i++;
+		return A.get(i).getNome().toLowerCase().equals(";");
 	}
 
 	public boolean DCLVAR(boolean q) {
