@@ -116,9 +116,9 @@ public class SemanticoAcao {
 			case 104:
 				try {
 					if (aux_Tipo_Ident.equals("rótulo")) {
-						if (Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
+						if (Varrer(Semantico.A.get(Semantico.i).getNome())) {
 							SemanticoVar v = new SemanticoVar();
-							v.setNome(model.Semantico.A.get(model.Semantico.i).getNome());
+							v.setNome(Semantico.A.get(Semantico.i).getNome());
 							v.setCategoria(aux_Tipo_Ident);
 							v.setNivel(nvl);
 							v.setGA(0);
@@ -132,11 +132,11 @@ public class SemanticoAcao {
 					} else {
 						if (aux_Tipo_Ident.equals("variável")) {
 //							Verifica se a Tabela de Símbolos já possui a variável:
-							if (Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
+							if (Varrer(Semantico.A.get(Semantico.i).getNome())) {
 								
 //								Cria e preenche novo registro para Tabela de Símbolos:
 								SemanticoVar v = new SemanticoVar();
-								v.setNome(model.Semantico.A.get(model.Semantico.i).getNome());
+								v.setNome(Semantico.A.get(Semantico.i).getNome());
 								v.setCategoria(aux_Tipo_Ident);
 								v.setNivel(nvl);
 								v.setGA(n_var + 3);
@@ -152,9 +152,9 @@ public class SemanticoAcao {
 							}
 						} else {
 							if (aux_Tipo_Ident.equals("parametros")) {
-								if (Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
+								if (Varrer(Semantico.A.get(Semantico.i).getNome())) {
 									SemanticoVar v = new SemanticoVar();
-									v.setNome(model.Semantico.A.get(model.Semantico.i).getNome());
+									v.setNome(Semantico.A.get(Semantico.i).getNome());
 									v.setCategoria(aux_Tipo_Ident);
 									v.setNivel(nvl);
 									v.setGA(n_par);
@@ -178,9 +178,9 @@ public class SemanticoAcao {
 			//	Verifica se a constante foi declarada:
 			case 105:
 				try {
-					if (Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
+					if (Varrer(Semantico.A.get(Semantico.i).getNome())) {
 						SemanticoVar v = new SemanticoVar();
-						v.setNome(model.Semantico.A.get(model.Semantico.i).getNome());
+						v.setNome(Semantico.A.get(Semantico.i).getNome());
 						v.setCategoria("constante");
 						v.setNivel(nvl);
 						v.setGA(0);
@@ -198,7 +198,7 @@ public class SemanticoAcao {
 			// Insere o valor declarado na constante contida na tabela de símbolos:
 			case 106:
 				try {
-					TS.get(TS.size() - 1).setGA(Integer.parseInt(model.Semantico.A.get(model.Semantico.i).getNome()));
+					TS.get(TS.size() - 1).setGA(Integer.parseInt(Semantico.A.get(Semantico.i).getNome()));
 					b = true;
 				} catch (Exception e) {
 					Erro(i);
@@ -216,9 +216,9 @@ public class SemanticoAcao {
 			case 108:
 				try {
 //					Valida se a procedure já está inserida na Tabela de Símbolos:
-					if (Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
+					if (Varrer(Semantico.A.get(Semantico.i).getNome())) {
 						SemanticoVar v = new SemanticoVar();
-						v.setNome(model.Semantico.A.get(model.Semantico.i).getNome());
+						v.setNome(Semantico.A.get(Semantico.i).getNome());
 						v.setCategoria("procedure");
 						v.setNivel(nvl);
 						v.setGA(Semantico.AL_Instr.size() + 1);
@@ -307,7 +307,7 @@ public class SemanticoAcao {
 				break;
 			case 113:
 				try {
-					String tkn = model.Semantico.A.get(model.Semantico.i - 1).getNome();
+					String tkn = Semantico.A.get(Semantico.i - 1).getNome();
 					if (!Varrer(tkn)) {
 						if ("rótulo".equals(Tipo(tkn))) {
 							int j = Indice(tkn);
@@ -333,9 +333,9 @@ public class SemanticoAcao {
 				break;
 			case 114:
 				try {
-					if (!Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
-						if (Tipo(model.Semantico.A.get(model.Semantico.i).getNome()).equals("variável")) {
-							atribuicoes = model.Semantico.A.get(model.Semantico.i).getNome();
+					if (!Varrer(Semantico.A.get(Semantico.i).getNome())) {
+						if (Tipo(Semantico.A.get(Semantico.i).getNome()).equals("variável")) {
+							atribuicoes = Semantico.A.get(Semantico.i).getNome();
 						} else {
 							Erro(3);
 						}
@@ -367,10 +367,10 @@ public class SemanticoAcao {
 				break;
 			case 116:
 				try {
-					if (Tipo(model.Semantico.A.get(model.Semantico.i).getNome()).equals("procedure")) {
-						ponteiro = TS.get(Indice(model.Semantico.A.get(model.Semantico.i).getNome())).getGA();
+					if (Tipo(Semantico.A.get(Semantico.i).getNome()).equals("procedure")) {
+						ponteiro = TS.get(Indice(Semantico.A.get(Semantico.i).getNome())).getGA();
 					} else {
-						if (Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
+						if (Varrer(Semantico.A.get(Semantico.i).getNome())) {
 							Erro(8);
 						} else {
 							Erro(2);
@@ -385,9 +385,9 @@ public class SemanticoAcao {
 				try {
 					int temp;
 					if (n_par == 0) {
-						temp = Indice(model.Semantico.A.get((model.Semantico.i) - (n_par)).getNome());
+						temp = Indice(Semantico.A.get((Semantico.i) - (n_par)).getNome());
 					} else {
-						temp = Indice(model.Semantico.A.get((model.Semantico.i) - (n_par) - 2).getNome());
+						temp = Indice(Semantico.A.get((Semantico.i) - (n_par) - 2).getNome());
 					}
 					if (TS.get(temp).getGB() == n_par) {
 						SemanticoInstrucao lc = new SemanticoInstrucao();
@@ -421,9 +421,9 @@ public class SemanticoAcao {
 				break;
 			case 119:
 				try {
-					if (!Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
-						if ("rótulo".equals(Tipo(model.Semantico.A.get(model.Semantico.i).getNome()))) {
-							int j = Indice(model.Semantico.A.get(model.Semantico.i).getNome());
+					if (!Varrer(Semantico.A.get(Semantico.i).getNome())) {
+						if ("rótulo".equals(Tipo(Semantico.A.get(Semantico.i).getNome()))) {
+							int j = Indice(Semantico.A.get(Semantico.i).getNome());
 							if (j == nvl) {
 								if (TS.get(j).getGA() != 0) {
 									SemanticoInstrucao lc = new SemanticoInstrucao();
@@ -562,7 +562,7 @@ public class SemanticoAcao {
 				break;
 			case 129:
 				try {
-					String temp = model.Semantico.A.get(model.Semantico.i).getNome();
+					String temp = Semantico.A.get(Semantico.i).getNome();
 					if (!Varrer(temp)) {
 						if (contexto.equals("readln")) {
 							if ("variável".equals(Tipo(temp))) {
@@ -576,7 +576,7 @@ public class SemanticoAcao {
 								lc2.setSeq(4);
 								lc2.setCod("ARMZ");
 								for (int j = 0; j < TS.size(); j++) {
-									if (model.Semantico.A.get(model.Semantico.i).getNome()
+									if (Semantico.A.get(Semantico.i).getNome()
 											.equals(TS.get(j).getNome())) {
 										lc2.setOp1(nvl - (TS.get(j).getNivel()));
 										lc2.setOp2(TS.get(j).getGA());
@@ -589,7 +589,7 @@ public class SemanticoAcao {
 							}
 						} else {
 							for (int u = 0; u < TS.size(); u++) {
-								if (model.Semantico.A.get(model.Semantico.i).getNome().equals(TS.get(u).getNome())) {
+								if (Semantico.A.get(Semantico.i).getNome().equals(TS.get(u).getNome())) {
 									if (TS.get(u).getCategoria().equals("constante")) {
 										SemanticoInstrucao lc = new SemanticoInstrucao();
 										lc.setSeq(3);
@@ -633,7 +633,7 @@ public class SemanticoAcao {
 				break;
 			case 130:
 				try {
-					String temp = model.Semantico.A.get(model.Semantico.i).getNome();
+					String temp = Semantico.A.get(Semantico.i).getNome();
 					temp.replaceAll("\"", "");
 					SemanticoInstrucao lc = new SemanticoInstrucao();
 					lc.setSeq(23);
@@ -730,7 +730,7 @@ public class SemanticoAcao {
 					lc2.setSeq(3);
 					lc2.setCod("CRCT");
 					lc2.setOp1(0);
-					lc2.setOp2(Integer.parseInt(model.Semantico.A.get(model.Semantico.i).getNome()));
+					lc2.setOp2(Integer.parseInt(Semantico.A.get(Semantico.i).getNome()));
 					Semantico.AL_Instr.add(lc2);
 					SemanticoInstrucao lc3 = new SemanticoInstrucao();
 					lc3.setSeq(15);
@@ -753,11 +753,11 @@ public class SemanticoAcao {
 				break;
 			case 137:
 				try {
-					if (!Varrer(model.Semantico.A.get(model.Semantico.i).getNome())) {
+					if (!Varrer(Semantico.A.get(Semantico.i).getNome())) {
 						n_for += 1;
 						for (int k = 0; k < TS.size(); k++) {
-							if (model.Semantico.A.get(model.Semantico.i).getNome().equals(TS.get(k).getNome())) {
-								if ("variável".equals(Tipo(model.Semantico.A.get(model.Semantico.i).getNome()))) {
+							if (Semantico.A.get(Semantico.i).getNome().equals(TS.get(k).getNome())) {
+								if ("variável".equals(Tipo(Semantico.A.get(Semantico.i).getNome()))) {
 									FOR[n_for] = k;
 								} else {
 									Erro(3);
@@ -1040,7 +1040,7 @@ public class SemanticoAcao {
 					lc.setSeq(3);
 					lc.setCod("CRCT");
 					lc.setOp1(0);
-					lc.setOp2(Integer.parseInt(model.Semantico.A.get(model.Semantico.i).getNome()));
+					lc.setOp2(Integer.parseInt(Semantico.A.get(Semantico.i).getNome()));
 					Semantico.AL_Instr.add(lc);
 					b = true;
 				} catch (Exception e) {
@@ -1119,31 +1119,31 @@ public class SemanticoAcao {
 	public static void Erro(int j) {
 		switch (j) {
 		case 1:
-			SemanticoAcao.Erro_Sem.add("O identificador já foi declarado - " + (model.Semantico.i + 1) + "° token");
+			SemanticoAcao.Erro_Sem.add("O identificador já foi declarado - " + (Semantico.i + 1) + "° token");
 			break;
 		case 2:
-			SemanticoAcao.Erro_Sem.add("O identificador não foi declarado - " + (model.Semantico.i + 1) + "° token");
+			SemanticoAcao.Erro_Sem.add("O identificador não foi declarado - " + (Semantico.i + 1) + "° token");
 			break;
 		case 3:
-			SemanticoAcao.Erro_Sem.add("É possivel atribuir valores apenas a varáveis - " + (model.Semantico.i + 1) + "° token");
+			SemanticoAcao.Erro_Sem.add("É possivel atribuir valores apenas a varáveis - " + (Semantico.i + 1) + "° token");
 			break;
 		case 4:
-			SemanticoAcao.Erro_Sem.add("Você não pode usar um rótulo declarado em um nível diferente - " + (model.Semantico.i + 1) + "° token");
+			SemanticoAcao.Erro_Sem.add("Você não pode usar um rótulo declarado em um nível diferente - " + (Semantico.i + 1) + "° token");
 			break;
 		case 5:
-			SemanticoAcao.Erro_Sem.add("Esse identificador não é um rótulo - " + (model.Semantico.i + 1) + "° token");
+			SemanticoAcao.Erro_Sem.add("Esse identificador não é um rótulo - " + (Semantico.i + 1) + "° token");
 			break;
 		case 6:
-			SemanticoAcao.Erro_Sem.add("Esse rótulo já foi usado - " + (model.Semantico.i + 1) + "° token");
+			SemanticoAcao.Erro_Sem.add("Esse rótulo já foi usado - " + (Semantico.i + 1) + "° token");
 			break;
 		case 7:
-			SemanticoAcao.Erro_Sem.add("Esse rótulo não aponta para nenhum lugar - " + (model.Semantico.i + 1) + "° token");
+			SemanticoAcao.Erro_Sem.add("Esse rótulo não aponta para nenhum lugar - " + (Semantico.i + 1) + "° token");
 			break;
 		case 8:
-			SemanticoAcao.Erro_Sem.add("Esse identificador não é uma procedure - " + (model.Semantico.i + 1) + "° token");
+			SemanticoAcao.Erro_Sem.add("Esse identificador não é uma procedure - " + (Semantico.i + 1) + "° token");
 			break;
 		case 9:
-			SemanticoAcao.Erro_Sem.add("A procedure possui um número de parametros diferente - " + (model.Semantico.i + 1) + "° token");
+			SemanticoAcao.Erro_Sem.add("A procedure possui um número de parametros diferente - " + (Semantico.i + 1) + "° token");
 			break;
 		case 100:
 			JOptionPane.showMessageDialog(null, "erro na ação " + j);

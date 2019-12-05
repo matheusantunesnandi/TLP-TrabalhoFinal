@@ -5,8 +5,8 @@ import javax.swing.JOptionPane;
 public class MaquinaHipotetica { // Classe que implementa a máquina hipotética.
 	public static int MaxInst = 1000;
 	public static int MaxList = 300;
-	public static int b; // base do segmento
-	public static int topo; // topo da pilha da base de dados
+	public static int b; // indica endereço do segmento de dados (base)
+	public static int topo; // aponta para o topo da pilha (área de dados)
 	public static int p; // apontador de instruções
 	public static int l; // primeiro operando
 	public static int a; // segundo operando
@@ -16,7 +16,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 	public static int k; // segundo operando
 	public static int i;
 	public static int num_impr = 0;
-	public static int[] S = new int[1000];
+	public static int[] S = new int[1000]; // pilha de execução
 	public static int LC = 0;
 
 	// TODO EM DESENVOLVIMENTO: Remover?
