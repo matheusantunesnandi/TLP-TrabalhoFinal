@@ -1,14 +1,11 @@
 package application;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
+import java.util.ArrayList;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import model.MaquinaHipotetica;
 import model.SemanticoAcao;
 import model.SemanticoVar;
@@ -45,13 +42,18 @@ public class ModalTabelaSEPilhaController {
 		
 		// Tabela Pilha
 		tpPilha.setCellValueFactory(new PropertyValueFactory<>("value"));
+	}
 
+	private void resetarCampos() {
+		tabelaSimbolos.getItems().setAll(new ArrayList<>());
+		tabelaPilha.getItems().setAll(new ArrayList<>());
 	}
 	
 //	TOOD Este método era para ser automático, sem precisar de botão.
 	@FXML
 	public void atualizar() {
 		inicalizarTabelas();
+		resetarCampos();
 		carregarDadosTabelaSimbolos();
 		carregarDadosPilha();
 		
