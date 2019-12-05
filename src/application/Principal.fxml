@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -33,6 +34,7 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#salvarTabelaLexica" text="Salvar tabela léxica" />
                   <MenuItem mnemonicParsing="false" onAction="#salvarCodigoIntermediario" text="Salvar código intermediário" />
+                  <CheckMenuItem fx:id="cmiMostrarTabelaSEPilha" mnemonicParsing="false" onAction="#mostrarTabelaDeSimbolosEPilha" text="Mostrar tabela de símbolos e pilha" />
                </items>
             </Menu>
         </menus>

@@ -44,6 +44,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 		
 //		Enquanto a instrução não for PARE:
 		while (operador != 26) {
+//			TODO Ideal seria pegar por parâmetro na chamada do Interpreta estas listas estáticas:
 			operador = Semantico.AL_Instr.get(p).getSeq();
 			l = Semantico.AL_Instr.get(p).getOp1();
 			a = Semantico.AL_Instr.get(p).getOp2();

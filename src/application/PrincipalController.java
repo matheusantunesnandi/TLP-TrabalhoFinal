@@ -5,19 +5,25 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Lexico;
 import model.LexicoGTabela;
@@ -35,9 +41,13 @@ public class PrincipalController {
 	public TabPane tabPane = new TabPane();
 	public TextArea textAreaEntrada = new TextArea();
 	public MenuItem mntmSalvar = new MenuItem();
+	public CheckMenuItem cmiMostrarTabelaSEPilha = new CheckMenuItem();
+	
+//	Modal
+	Stage modalTabelaSEPilha = new Stage();
 	
 //	Tabela léxica e suas colunas :
-	public TableView<LexicoToken> tabelaLexica = new TableView<LexicoToken>();
+	public TableView<LexicoToken> tabelaLexica = new TableView<>();
 	public TableColumn<LexicoToken, Integer> ordemLexica = new TableColumn<>("N°");
 	public TableColumn<LexicoToken, Integer> codigo = new TableColumn<>("Código");
 	public TableColumn<LexicoToken, String> nome = new TableColumn<>("Token");
@@ -80,6 +90,8 @@ public class PrincipalController {
 
 		if (!PASTA_EXPORT.exists())
 			PASTA_EXPORT.mkdir();
+		
+		inicializarModalTabelaSimbolosEPilha();
 	}
 	
 	/**
@@ -139,6 +151,9 @@ public class PrincipalController {
 		mntmSalvar.setDisable(true);
 		salvo=true;
 		resetarCamposPreAnalise();
+		
+//		TODO Remover
+//		cmiMostrarTabelaSEPilha.setDisable(true);
 	}
 
 	private void resetarCamposPreAnalise() {
@@ -208,7 +223,7 @@ public class PrincipalController {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			JOptionPane.showMessageDialog(null, "Não foi possível abrir o arquivo");
+			JOptionPane.showMessageDialog(null, "Não foi possível abrir o arquivo.");
 		}
 	}
 
@@ -341,6 +356,9 @@ public class PrincipalController {
 		
 		// Simula o próximo passo para validar a ação anterior (Semântica):
 		passoAnteriorComSucesso(ETAPA_GER_CODIGO);
+		
+//		Reinicializa a modal para carregar os dados:
+		inicializarModalTabelaSimbolosEPilha();
 	}
 	
 //	Métodos gerais adiante:
@@ -477,5 +495,35 @@ public class PrincipalController {
 	public void definirEdicaoSalva() {
 	    mntmSalvar.setDisable(true);
 	    salvo=true;
+	}
+	
+	@FXML
+	public void mostrarTabelaDeSimbolosEPilha() {
+		if (modalTabelaSEPilha.isShowing()) {
+			modalTabelaSEPilha.close();
+			
+		} else {
+		    modalTabelaSEPilha.show();
+		}
+	}
+
+	private void inicializarModalTabelaSimbolosEPilha() {
+		try {
+//			TODO Validar forma correta de fazer isto:
+			modalTabelaSEPilha = new Stage();
+			
+			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("ModalTabelaSEPilha.fxml"));
+		    modalTabelaSEPilha.setScene(new Scene(root));
+		    modalTabelaSEPilha.setTitle("Tabela de Símbolos e Pilha");
+		    modalTabelaSEPilha.initModality(Modality.WINDOW_MODAL);
+		    modalTabelaSEPilha.setOnCloseRequest(event -> {
+		        cmiMostrarTabelaSEPilha.setSelected(false);
+		    });
+		    
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Erro ao abrir modal da Tabela de Símbolos e Pilha.");
+			e.printStackTrace();
+		}
 	}
 }

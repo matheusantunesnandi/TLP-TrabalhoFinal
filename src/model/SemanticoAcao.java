@@ -37,7 +37,7 @@ public class SemanticoAcao {
 	static String aux_Tipo_Ident;
 	
 	static boolean parmtr = false;
-	static ArrayList<SemanticoVar> TS = new ArrayList<SemanticoVar>();
+	public static ArrayList<SemanticoVar> TS = new ArrayList<SemanticoVar>();
 	static ArrayList<Integer> ponteiro_proc = new ArrayList<Integer>();
 
 	public static void Zerar() {
