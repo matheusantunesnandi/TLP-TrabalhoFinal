@@ -73,5 +73,19 @@ public class ModalTabelaSEPilhaController {
 	public void carregarDadosTabelaSimbolos() {
 		tabelaSimbolos.getItems().addAll(SemanticoAcao.TS);
 	}
+	
+
+	@FXML
+	public void executarPassoAPasso() {
+//		TODO executarPassoAPasso EM DESENVOLVIMENTO: Remover?
+//		MaquinaHipotetica.executarPassoAPasso = true;
+//		JOptionPane.showMessageDialog(null, "EM DESENVOLVIMENTO (BUGADO) Clique em \"Executar Análise\" novamente na janela principal.");
+	}
+	
+	@FXML
+	public void proximoPasso() {
+//		TODO proximoPasso EM DESENVOLVIMENTO: Remover?
+//		MaquinaHipotetica.pause = false;
+	}
 
 }

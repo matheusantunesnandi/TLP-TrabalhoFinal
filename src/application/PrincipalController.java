@@ -204,7 +204,7 @@ public class PrincipalController {
 
 			File file = fc.showOpenDialog(new Stage());
 
-			if (file.exists() && file.isFile()) {
+			if (file != null && file.exists() && file.isFile()) {
 
 				BufferedReader br = new BufferedReader(new FileReader(file));
 
@@ -328,6 +328,10 @@ public class PrincipalController {
 
 	private void salvarArquivo(File file, String texto) {
 		try {
+			
+			if (file == null)
+				return;
+			
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
 			

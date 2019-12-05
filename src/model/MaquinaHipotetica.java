@@ -19,6 +19,24 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 	public static int[] S = new int[1000];
 	public static int LC = 0;
 
+	// TODO EM DESENVOLVIMENTO: Remover?
+	// Detectar alteração para execução em passo-a-passo
+//	public static int[] STemp = S.clone();
+//	public static boolean pause = true;
+//	public static boolean executarPassoAPasso = false;
+//	
+//	public static void verificaSePausa() {
+//		
+//		if (executarPassoAPasso == true && !STemp.equals(S)) {
+//			pause = true;
+//			
+//			while (pause) {}
+//			
+//			STemp = S.clone();
+//			
+//		}
+//	}
+
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -41,14 +59,18 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 		S[2] = 0; // RA
 		operador = 0;
 		String leitura;
-		
+
 //		Enquanto a instrução não for PARE:
 		while (operador != 26) {
+
+//			TODO EM DESENVOLVIMENTO: Remover?
+//			verificaSePausa();
+
 //			TODO Ideal seria pegar por parâmetro na chamada do Interpreta estas listas estáticas:
 			operador = Semantico.AL_Instr.get(p).getSeq();
 			l = Semantico.AL_Instr.get(p).getOp1();
 			a = Semantico.AL_Instr.get(p).getOp2();
-			p++;;
+			p++;
 
 			switch (operador) {
 			case 1:// RETU
