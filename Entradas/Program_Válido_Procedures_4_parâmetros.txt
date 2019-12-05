@@ -1,0 +1,24 @@
+Program testeproc1;
+Var
+  x, y:integer;
+
+Procedure testeA(z :integer);
+	
+	Begin
+		Writeln("Procedure A com parâmetro z = ");
+
+		(*Não funcionando literal e expressão:*)
+		Writeln(z);
+	End;
+
+Procedure testeB;
+	
+	Begin
+		Writeln("Procedure B sem parâmetro");
+	End;
+
+Begin
+	Readln(x);
+	Call testeA(x);
+	Call testeB;
+End.

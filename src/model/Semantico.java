@@ -92,72 +92,74 @@ public class Semantico {
 
 	public boolean COMANDO(boolean q) {
 		boolean b = false;
-		a = i;
-		i++;
-		if (A.get(i).getNome().toLowerCase().equals("for") && !validarSemanticaComandoFor(b)) {
 
-			b = validarSemanticaComandoFor(b);
+		a = i;
+
+		i++;
+		if (A.get(i).getNome().toLowerCase().equals("for")) {
+
+			b = validarSemanticaComandoFor();
 
 		} else {
 			i = a;
-			i++;
 
+			i++;
 			if (A.get(i).getNome().toLowerCase().equals("call")) {
-				b = validarSemanticaComandoCall(b);
+				b = validarSemanticaComandoCall();
 
 			} else {
 				i = a;
-				i++;
 
+				i++;
 				if (A.get(i).getNome().toLowerCase().equals("goto")) {
-					b = validarSemanticaComandoGoto(b);
+					b = validarSemanticaComandoGoto();
 
 				} else {
 					i = a;
-					i++;
 
+					i++;
 					if (A.get(i).getNome().toLowerCase().equals("if")) {
-						b = validarSemanticaComandoIf(b);
+						b = validarSemanticaComandoIf();
 
 					} else {
 						i = a;
-						i++;
 
+						i++;
 						if (A.get(i).getNome().toLowerCase().equals("while")) {
-							b = validarSemanticaComandoWhile(b);
+							b = validarSemanticaComandoWhile();
 
 						} else {
 							i = a;
-							i++;
 
+							i++;
 							if (A.get(i).getNome().toLowerCase().equals("repeat")) {
-								b = validarSemanticaComandoRepeat(b);
+								b = validarSemanticaComandoRepeat();
 
 							} else {
 								i = a;
-								i++;
 
+								i++;
 								if (A.get(i).getNome().toLowerCase().equals("readln")) {
-									b = validarSemanticaComandoReadln(b);
+									b = validarSemanticaComandoReadln();
 
 								} else {
 									i = a;
-									i++;
 
+									i++;
 									if (A.get(i).getNome().toLowerCase().equals("writeln")) {
-										b = validarSemanticaComandoWriteln(b);
+										b = validarSemanticaComandoWriteln();
 
 									} else {
 										i = a;
-										i++;
 
+										i++;
 										if (A.get(i).getNome().toLowerCase().equals("case")) {
-											b = validarSemanticaComandoCase(b);
+											b = validarSemanticaComandoCase();
 
 										} else {
 											i = a;
-											i++;
 
+											i++;
 											if (IDENT(i)) {
 												if (A.get(i + 1).getNome().toLowerCase().equals(":")) {
 													if (RCOMID()) {
@@ -193,14 +195,16 @@ public class Semantico {
 				}
 			}
 		}
+
 		if (!b) {
 			i = a;
-			b = !q;
+			return !q;
 		}
 		return true;
 	}
 
-	private boolean validarSemanticaComandoCase(boolean b) {
+	private boolean validarSemanticaComandoCase() {
+		boolean b = false;
 		if (SemanticoAcao.Acao(132)) {
 			if (EXPRESSAO()) {
 				i++;
@@ -219,7 +223,8 @@ public class Semantico {
 		return b;
 	}
 
-	private boolean validarSemanticaComandoWriteln(boolean b) {
+	private boolean validarSemanticaComandoWriteln() {
+		boolean b = false;
 		i++;
 		if (A.get(i).getNome().toLowerCase().equals("(")) {
 			if (ITEMSAIDA()) {
@@ -234,7 +239,8 @@ public class Semantico {
 		return b;
 	}
 
-	private boolean validarSemanticaComandoReadln(boolean b) {
+	private boolean validarSemanticaComandoReadln() {
+		boolean b = false;
 		if (SemanticoAcao.Acao(128)) {
 			i++;
 			if (A.get(i).getNome().toLowerCase().equals("(")) {
@@ -252,7 +258,8 @@ public class Semantico {
 		return b;
 	}
 
-	private boolean validarSemanticaComandoRepeat(boolean b) {
+	private boolean validarSemanticaComandoRepeat() {
+		boolean b = false;
 		if (SemanticoAcao.Acao(126)) {
 			if (COMANDO(true)) {
 				i++;
@@ -268,7 +275,8 @@ public class Semantico {
 		return b;
 	}
 
-	private boolean validarSemanticaComandoWhile(boolean b) {
+	private boolean validarSemanticaComandoWhile() {
+		boolean b = false;
 		if (SemanticoAcao.Acao(123)) {
 			if (EXPRESSAO()) {
 				if (SemanticoAcao.Acao(124)) {
@@ -286,7 +294,8 @@ public class Semantico {
 		return b;
 	}
 
-	private boolean validarSemanticaComandoIf(boolean b) {
+	private boolean validarSemanticaComandoIf() {
+		boolean b = false;
 		if (EXPRESSAO()) {
 			if (SemanticoAcao.Acao(120)) {
 				i++;
@@ -304,7 +313,8 @@ public class Semantico {
 		return b;
 	}
 
-	private boolean validarSemanticaComandoGoto(boolean b) {
+	private boolean validarSemanticaComandoGoto() {
+		boolean b = false;
 		i++;
 		if (IDENT(i)) {
 			if (SemanticoAcao.Acao(119)) {
@@ -314,7 +324,8 @@ public class Semantico {
 		return b;
 	}
 
-	private boolean validarSemanticaComandoCall(boolean b) {
+	private boolean validarSemanticaComandoCall() {
+		boolean b = false;
 		i++;
 		if (IDENT(i)) {
 			if (SemanticoAcao.Acao(116)) {
@@ -328,7 +339,8 @@ public class Semantico {
 		return b;
 	}
 
-	private boolean validarSemanticaComandoFor(boolean b) {
+	private boolean validarSemanticaComandoFor() {
+		boolean b = false;
 		i++;
 		if (IDENT(i) && SemanticoAcao.Acao(137)) {
 			i++;
@@ -394,77 +406,73 @@ public class Semantico {
 	}
 
 	public boolean DCLCONST(boolean q) {
-		boolean b = false;
 		a = i;
+
 		i++;
-		if (A.get(i).getNome().toLowerCase().equals("const")) {
-			i++;
-			if (IDENT(i)) {
-				if (SemanticoAcao.Acao(105)) {
-					i++;
-					if (A.get(i).getNome().toLowerCase().equals("=")) {
-						i++;
-						if (INTEIRO(i)) {
-							if (SemanticoAcao.Acao(106)) {
-								i++;
-								if (A.get(i).getNome().toLowerCase().equals(";")) {
-									if (LDCONST(false)) {
-										b = true;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if (!b) {
+		if (!A.get(i).getNome().toLowerCase().equals("const")) {
 			i = a;
-			if (q == false) {
-				b = true;
-			}
+			return !q;
 		}
-		return b;
+
+		i++;
+		if (!IDENT(i) || !SemanticoAcao.Acao(105)) {
+			i = a;
+			return !q;
+		}
+
+		i++;
+		if (!A.get(i).getNome().toLowerCase().equals("=")) {
+			i = a;
+			return !q;
+		}
+
+		i++;
+		if (!INTEIRO(i) || !SemanticoAcao.Acao(106)) {
+			i = a;
+			return !q;
+		}
+
+		i++;
+		if (!A.get(i).getNome().toLowerCase().equals(";") || !LDCONST(false)) {
+			i = a;
+			return !q;
+		}
+
+		return true;
 	}
 
 	public boolean DCLPROC(boolean q) {
-		boolean b = false;
 		a = i;
+
 		i++;
-		if (A.get(i).getNome().toLowerCase().equals("procedure")) {
-			i++;
-			if (IDENT(i)) {
-				if (SemanticoAcao.Acao(108)) {
-//					Incrementar nível da procedure após adicionar na Tabela de Símbolos.
-					if (DEFPAR(false)) {
-						i++;
-						if (A.get(i).getNome().toLowerCase().equals(";")) {
-							if (SemanticoAcao.Acao(109)) {
-								if (BLOCO()) {
-									i++;
-									if (A.get(i).getNome().toLowerCase().equals(";")) {
-										if (SemanticoAcao.Acao(110)) {
-											if (DCLPROC(false)) {
-												b = true;
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if (!b) {
+		if (!A.get(i).getNome().toLowerCase().equals("procedure")) {
 			i = a;
-			if (q == false) {
-				b = true;
-			}
+			return !q;
 		}
-		return b;
+
+		i++;
+//			Incrementar nível da procedure após adicionar na Tabela de Símbolos.
+		if (!IDENT(i) || !SemanticoAcao.Acao(108) || !DEFPAR(false)) {
+			i = a;
+			return !q;
+		}
+
+		i++;
+		if (!A.get(i).getNome().toLowerCase().equals(";") || !SemanticoAcao.Acao(109) || !BLOCO()) {
+			i = a;
+			return !q;
+		}
+
+		i++;
+		if (!A.get(i).getNome().toLowerCase().equals(";") || !SemanticoAcao.Acao(110) || !DCLPROC(false)) {
+			i = a;
+			return !q;
+		}
+
+		return true;
 	}
 
+//	TODO Conferir, comparar com original
 	public boolean DCLROT() {
 		a = i;
 
@@ -661,34 +669,32 @@ public class Semantico {
 	}
 
 	public boolean LDCONST(boolean q) {
-		boolean b = false;
 		a = i;
 		i++;
-		if (IDENT(i)) {
-			if (SemanticoAcao.Acao(105)) {
-				i++;
-				if (A.get(i).getNome().toLowerCase().equals("=")) {
-					i++;
-					if (INTEIRO(i)) {
-						if (SemanticoAcao.Acao(106)) {
-							i++;
-							if (A.get(i).getNome().toLowerCase().equals(";")) {
-								if (LDCONST(false)) {
-									b = true;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if (!b) {
+		if (!IDENT(i) || !SemanticoAcao.Acao(105)) {
 			i = a;
-			if (q == false) {
-				b = true;
-			}
+			return !q;
 		}
-		return b;
+
+		i++;
+		if (!A.get(i).getNome().toLowerCase().equals("=")) {
+			i = a;
+			return !q;
+		}
+
+		i++;
+		if (!INTEIRO(i) || !SemanticoAcao.Acao(106)) {
+			i = a;
+			return !q;
+		}
+
+		i++;
+		if (!A.get(i).getNome().toLowerCase().equals(";") || !LDCONST(false)) {
+			i = a;
+			return !q;
+		}
+
+		return true;
 	}
 
 	public boolean LDVAR(boolean q) {

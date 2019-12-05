@@ -338,6 +338,9 @@ public class PrincipalController {
 		inicalizarTabelas();
 		
 		executarAnaliseSemantica();
+		
+		// Simula o próximo passo para validar a ação anterior (Semântica):
+		passoAnteriorComSucesso(ETAPA_GER_CODIGO);
 	}
 	
 //	Métodos gerais adiante:
@@ -364,6 +367,8 @@ public class PrincipalController {
 			
 			tabelaLexica.getItems().add(lt);
 		}
+		
+		tabPane.getSelectionModel().select(0);
 	}
 
 	public void executarAnaliseSintatica() {
@@ -420,6 +425,8 @@ public class PrincipalController {
 			tabelaCodigoIntermediario.getItems().add(si);
 			codigoGeradoComSucesso = true;
 		}
+		
+		tabPane.getSelectionModel().select(3);
 	}
 	
 	public void executarNaMaquinaHipotetica() {
