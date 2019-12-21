@@ -387,8 +387,9 @@ public class SemanticoAcao {
 					if (n_par == 0) {
 						temp = Indice(Semantico.A.get((Semantico.i) - (n_par)).getNome());
 					} else {
-						temp = Indice(Semantico.A.get((Semantico.i) - (n_par) - 2).getNome());
+						temp = Indice(Semantico.A.get((Semantico.i) - (n_par) - (n_par+1)).getNome());
 					}
+					
 					if (TS.get(temp).getGB() == n_par) {
 						SemanticoInstrucao lc = new SemanticoInstrucao();
 						lc.setSeq(25);
