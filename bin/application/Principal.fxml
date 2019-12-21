@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="549.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.PrincipalController">
+   <top>
+      <MenuBar prefWidth="618.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Opçoes">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#novo" text="Novo" />
+                  <MenuItem mnemonicParsing="false" onAction="#abrir" text="Abrir" />
+                  <MenuItem fx:id="mntmSalvar" mnemonicParsing="false" onAction="#salvar" text="Salvar" />
+                  <MenuItem mnemonicParsing="false" onAction="#salvarComo" text="Salvar Como" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#sair" text="Sair" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Mais">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#salvarTabelaLexica" text="Salvar tabela léxica" />
+                  <MenuItem mnemonicParsing="false" onAction="#salvarCodigoIntermediario" text="Salvar código intermediário" />
+                  <CheckMenuItem fx:id="cmiMostrarTabelaSEPilha" mnemonicParsing="false" onAction="#mostrarTabelaDeSimbolosEPilha" text="Mostrar tabela de símbolos e pilha" />
+               </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <top>
+            <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <buttons>
+                  <Button mnemonicParsing="false" onMouseReleased="#executarNaMaquinaHipotetica" text="Executar na Máquina H." />
+                  <Button mnemonicParsing="false" onMouseReleased="#gerarCodigoIntermediario" text="Gerar código intermediário" />
+                  <Button mnemonicParsing="false" onMouseReleased="#executarAnalise" text="Executar análise" />
+              </buttons>
+            </ButtonBar>
+         </top>
+         <center>
+            <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <items>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                     <content>
+                        <TextArea fx:id="textAreaEntrada" onKeyTyped="#definirEdicaoNaoSalva" prefHeight="400.0" prefWidth="187.0" />
+                     </content>
+                  </ScrollPane>
+                  <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Léxico">
+                           <content>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                 <center>
+                                    <TableView fx:id="tabelaLexica" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                      <columns>
+                                        <TableColumn fx:id="ordemLexica" prefWidth="40.0" text="N°" />
+                                        <TableColumn fx:id="codigo" prefWidth="62.0" text="Código" />
+                                          <TableColumn fx:id="nome" prefWidth="64.0" text="Token" />
+                                          <TableColumn fx:id="desc" prefWidth="212.0" text="Descrição" />
+                                      </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </center>
+                              </BorderPane>
+                           </content>
+                      </Tab>
+                        <Tab text="Sintático">
+                           <content>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                 <center>
+                                    <TableView fx:id="tabelaSintatica" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                      <columns>
+                                        <TableColumn fx:id="errosSintaticos" prefWidth="75.0" text="Erros" />
+                                      </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </center>
+                              </BorderPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Semântico">
+                           <content>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                 <center>
+                                    <TableView fx:id="tabelaSemantica" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                      <columns>
+                                        <TableColumn fx:id="errosSemanticos" prefWidth="75.0" text="Erros" />
+                                      </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </center>
+                              </BorderPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Código Intermediário">
+                           <content>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                 <center>
+                                    <TableView fx:id="tabelaCodigoIntermediario" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                      <columns>
+                                        <TableColumn fx:id="ordemCodInter" prefWidth="29.0" text="N°" />
+                                        <TableColumn fx:id="codigoTabelaCodInter" prefWidth="60.0" text="Código" />
+                                          <TableColumn fx:id="instrucao" prefWidth="136.0" text="Instrução" />
+                                          <TableColumn fx:id="op1" prefWidth="50.0" text="OP1" />
+                                          <TableColumn fx:id="op2" prefWidth="102.0" text="OP2" />
+                                      </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </center>
+                              </BorderPane>
+                           </content>
+                        </Tab>
+                    </tabs>
+                  </TabPane>
+               </items>
+            </SplitPane>
+         </center>
+      </BorderPane>
+   </center>
+</BorderPane>
