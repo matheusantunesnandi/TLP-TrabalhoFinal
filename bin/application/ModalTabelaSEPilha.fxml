@@ -12,8 +12,8 @@
       <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <buttons>
             <Button mnemonicParsing="false" onMouseReleased="#proximoPasso" text="Próximo passo" />
-            <Button mnemonicParsing="false" onMouseReleased="#executarPassoAPasso" text="Executar passo-a-passo" />
-            <Button mnemonicParsing="false" onMouseReleased="#atualizar" text="Atualizar" />
+            <Button fx:id="buttonExecutarPP" mnemonicParsing="false" onMouseReleased="#executarPassoAPasso" text="Executar passo-a-passo" />
+            <Button fx:id="buttonAtualizar" mnemonicParsing="false" onMouseReleased="#atualizar" text="Atualizar" />
          </buttons>
       </ButtonBar>
    </top>

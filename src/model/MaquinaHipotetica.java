@@ -16,26 +16,24 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 	public static int k; // segundo operando
 	public static int i;
 	public static int num_impr = 0;
+
+//	TODO Alterar para tipo STACK no lugar de array fixo. Ajudará na compreensão passo-a-passo e otimização.
 	public static int[] S = new int[1000]; // pilha de execução
+
 	public static int LC = 0;
 
 	// TODO EM DESENVOLVIMENTO: Remover?
 	// Detectar alteração para execução em passo-a-passo
-//	public static int[] STemp = S.clone();
-//	public static boolean pause = true;
-//	public static boolean executarPassoAPasso = false;
-//	
-//	public static void verificaSePausa() {
-//		
-//		if (executarPassoAPasso == true && !STemp.equals(S)) {
-//			pause = true;
-//			
-//			while (pause) {}
-//			
-//			STemp = S.clone();
-//			
-//		}
-//	}
+	public static boolean pause = true;
+	public static boolean executarPassoAPasso = false;
+
+	public static void verificaSePausa() {
+		if (executarPassoAPasso == true) {
+			while (pause) {
+			}
+			pause = true;
+		}
+	}
 
 	/**
 	 * @wbp.parser.entryPoint
@@ -54,6 +52,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 		topo = 2;
 		b = 0; // registrador base
 		p = 0; // aponta proxima instrução
+
 		S[0] = 0; // SL
 		S[1] = 0; // DL
 		S[2] = 0; // RA
@@ -64,7 +63,7 @@ public class MaquinaHipotetica { // Classe que implementa a máquina hipotética
 		while (operador != 26) {
 
 //			TODO EM DESENVOLVIMENTO: Remover?
-//			verificaSePausa();
+			verificaSePausa();
 
 //			TODO Ideal seria pegar por parâmetro na chamada do Interpreta estas listas estáticas:
 			operador = Semantico.AL_Instr.get(p).getSeq();

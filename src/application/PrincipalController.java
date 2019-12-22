@@ -7,10 +7,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import javax.swing.JOptionPane;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -454,8 +457,25 @@ public class PrincipalController {
 	public void executarNaMaquinaHipotetica() {
 		gerarCodigoIntermediario();
 		
-		if (passoAnteriorComSucesso(ETAPA_GER_CODIGO))
-			MaquinaHipotetica.Interpreta();
+		if (passoAnteriorComSucesso(ETAPA_GER_CODIGO)) {
+			
+			Task<Void> task = new Task<Void>() {
+			    @Override
+			    protected Void call() throws Exception {
+					MaquinaHipotetica.Interpreta();
+					Thread.currentThread().stop();
+					return null;
+			    }
+			};
+
+			Executor exec = Executors.newCachedThreadPool(runnable -> {
+			    Thread t = new Thread(runnable);
+			    t.setDaemon(true);
+			    return t;
+			});
+
+			exec.execute(task);
+		}
 	}
 
 	private boolean passoAnteriorComSucesso(int etapaAtual) {
